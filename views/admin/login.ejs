@@ -1,0 +1,221 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Sign in to GitHub · GitHub</title>
+    <style>
+        :root {
+            --color-bg: #f6f8fa;
+            --color-text: #24292e;
+            --color-border: #e1e4e8;
+            --color-btn-bg: #2ea44f;
+            --color-btn-text: #ffffff;
+            --color-btn-border: rgba(27,31,35,0.15);
+            --color-btn-shadow: 0 1px 0 rgba(27,31,35,0.1);
+            --color-btn-hover-bg: #2c974b;
+            --color-link: #0366d6;
+            --color-input-border: #e1e4e8;
+            --color-input-shadow: inset 0 1px 2px rgba(27,31,35,0.075);
+            --color-header-bg: #24292e;
+            --color-header-text: #ffffff;
+            --color-footer-bg: #ffffff;
+            --color-footer-border: #eaecef;
+            --font-sans: -apple-system,BlinkMacSystemFont,"Segoe UI",Helvetica,Arial,sans-serif,"Apple Color Emoji","Segoe UI Emoji";
+        }
+
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+        }
+
+        body {
+            font-family: var(--font-sans);
+            line-height: 1.5;
+            color: var(--color-text);
+            background-color: var(--color-bg);
+        }
+        header{
+          padding: 1rem!important;
+        }
+        main {
+            max-width: 350px;
+            margin: 0 auto;
+            padding: 1rem;
+        }
+
+        .login-form {
+            background-color: #ffffff;
+            border: 1px solid var(--color-border);
+            border-radius: 6px;
+            padding: 2rem;
+            margin-bottom: 16px;
+            margin-top: 40%;
+        }
+
+        .form-header {
+            margin-bottom: 16px;
+        }
+
+        .form-header h1 {
+            font-size: 24px;
+            font-weight: 300;
+            letter-spacing: -0.5px;
+            text-align: center;
+        }
+
+        .form-group {
+            margin-bottom: 16px;
+        }
+
+        .form-group label {
+            display: block;
+            margin-bottom: 8px;
+            font-weight: 600;
+        }
+
+        .form-control {
+            width: 100%;
+            padding: 5px 12px;
+            font-size: 14px;
+            line-height: 20px;
+            color: var(--color-text);
+            background-color: #ffffff;
+            background-repeat: no-repeat;
+            background-position: right 8px center;
+            border: 1px solid var(--color-input-border);
+            border-radius: 6px;
+            outline: none;
+            box-shadow: var(--color-input-shadow);
+        }
+
+        .form-control:focus {
+            border-color: #0366d6;
+            box-shadow: 0 0 0 3px rgba(3,102,214,0.3);
+        }
+
+        .form-actions {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .btn {
+            display: inline-block;
+            padding: 5px 16px;
+            font-size: 14px;
+            font-weight: 500;
+            line-height: 20px;
+            white-space: nowrap;
+            vertical-align: middle;
+            cursor: pointer;
+            user-select: none;
+            border: 1px solid;
+            border-radius: 6px;
+            appearance: none;
+        }
+
+        .btn-primary {
+            color: var(--color-btn-text);
+            background-color: var(--color-btn-bg);
+            border-color: var(--color-btn-border);
+            box-shadow: var(--color-btn-shadow);
+        }
+
+        .btn-primary:hover {
+            background-color: var(--color-btn-hover-bg);
+        }
+
+        .btn-block {
+            display: block;
+            width: 100%;
+            text-align: center;
+        }
+
+        .forgot-password {
+            font-size: 12px;
+        }
+
+        .login-callout {
+            padding: 16px;
+            font-size: .8rem;
+            text-align: center;
+            border: 1px solid var(--color-border);
+            border-radius: 6px;
+        }
+
+        .footer {
+            margin-top: 40px;
+            padding: 40px 0;
+            border-top: 1px solid var(--color-footer-border);
+            text-align: center;
+        }
+
+        .footer-links {
+            list-style: none;
+            margin-bottom: 8px;
+        }
+
+        .footer-links li {
+            display: inline-block;
+            margin-right: 16px;
+        }
+
+        .footer-links a, .forgot-password {
+            color: var(--color-link);
+            text-decoration: none;
+        }
+
+        .footer-links a:hover, .forgot-password:hover {
+            text-decoration: underline;
+        }
+
+        @media (max-width: 340px) {
+            .container {
+                padding: 24px 16px;
+            }
+        }
+        .errMsg{
+          background-color: red;
+          color: white;
+          padding: .5rem 1rem;
+          border-radius: 5px;
+          position: absolute;
+          top: 30%;
+          left: 3%;
+          opacity: .8;
+        }
+    </style>
+    <link rel="stylesheet" href="/adminHeader.css" type="text/css" media="all" />
+</head>
+<body>
+    
+    
+    <main class="container">
+      <% if(messages.error) { %>
+        <div class="errMsg">
+            <%= messages.error %>
+        </div>
+      <% } %>
+        <form class="login-form" method="post" action="/admin/login">
+            <div class="form-header">
+                <h1>Admin</h1>
+            </div>
+            <div class="form-group">
+                <label for="login_field">Username</label>
+                <input type="text" name="username" id="login_field" class="form-control" autocapitalize="off" autocorrect="off" autocomplete="username" autofocus="autofocus">
+            </div>
+            <div class="form-group">
+                <label for="password">Password</label>
+                <input type="password" name="password" id="password" class="form-control" autocomplete="current-password">
+            </div>
+            <div class="form-actions">
+                <button type="submit" class="btn btn-primary btn-block">Sign in</button>
+            </div>
+        </form>
+        
+    </main>
+
+</body>
+</html>

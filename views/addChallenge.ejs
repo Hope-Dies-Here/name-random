@@ -1,0 +1,270 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="/adminHeader.css" type="text/css" media="all" />
+    <title>Upload Challenge - CodeChallenge Hub</title>
+    <style>
+        :root {
+            --color-bg: #f6f8fa;
+            --color-text: #24292e;
+            --color-border: #e1e4e8;
+            --color-btn-bg: #2ea44f;
+            --color-btn-text: #ffffff;
+            --color-btn-border: rgba(27,31,35,0.15);
+            --color-btn-shadow: 0 1px 0 rgba(27,31,35,0.1);
+            --color-btn-hover-bg: #2c974b;
+            --color-link: #0366d6;
+            --color-input-border: #e1e4e8;
+            --color-input-shadow: inset 0 1px 2px rgba(27,31,35,0.075);
+            --color-error: #cb2431;
+            --font-sans: -apple-system,BlinkMacSystemFont,"Segoe UI",Helvetica,Arial,sans-serif,"Apple Color Emoji","Segoe UI Emoji";
+        }
+
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+        }
+
+        body {
+            font-family: var(--font-sans);
+            font-size: 14px;
+            line-height: 1.5;
+            color: var(--color-text);
+            background-color: var(--color-bg);
+        }
+
+        .container {
+            max-width: 800px;
+            margin: 40px auto;
+            padding: 24px;
+            background-color: #ffffff;
+            border: 1px solid var(--color-border);
+            border-radius: 6px;
+        }
+
+        h1 {
+            font-size: 24px;
+            font-weight: 300;
+            letter-spacing: -0.5px;
+            text-align: center;
+            margin-bottom: 24px;
+        }
+
+        .form-group {
+            margin-bottom: 16px;
+        }
+
+        label {
+            display: block;
+            margin-bottom: 8px;
+            font-weight: 600;
+        }
+
+        .form-control {
+            width: 100%;
+            padding: 5px 12px;
+            font-size: 14px;
+            line-height: 20px;
+            color: var(--color-text);
+            background-color: #ffffff;
+            background-repeat: no-repeat;
+            background-position: right 8px center;
+            border: 1px solid var(--color-input-border);
+            border-radius: 6px;
+            outline: none;
+            box-shadow: var(--color-input-shadow);
+        }
+
+        .form-control:focus {
+            border-color: #0366d6;
+            box-shadow: 0 0 0 3px rgba(3,102,214,0.3);
+        }
+
+        select.form-control {
+            appearance: none;
+            background-image: url("data:image/svg+xml,%3csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 16 16'%3e%3cpath fill='none' stroke='%23343a40' stroke-linecap='round' stroke-linejoin='round' stroke-width='2' d='M2 5l6 6 6-6'/%3e%3c/svg%3e");
+            background-repeat: no-repeat;
+            background-position: right 0.75rem center;
+            background-size: 16px 12px;
+        }
+
+        textarea.form-control {
+            min-height: 100px;
+            resize: vertical;
+        }
+
+        .btn {
+            display: inline-block;
+            padding: 5px 16px;
+            font-size: 14px;
+            font-weight: 500;
+            line-height: 20px;
+            white-space: nowrap;
+            vertical-align: middle;
+            cursor: pointer;
+            user-select: none;
+            border: 1px solid;
+            border-radius: 6px;
+            appearance: none;
+            width: 100%;
+            text-align: center;
+        }
+
+        .btn-primary {
+            color: var(--color-btn-text);
+            background-color: var(--color-btn-bg);
+            border-color: var(--color-btn-border);
+            box-shadow: var(--color-btn-shadow);
+        }
+
+        .btn-primary:hover {
+            background-color: var(--color-btn-hover-bg);
+        }
+
+        .error-message {
+            color: var(--color-error);
+            font-size: 12px;
+            margin-top: 4px;
+            display: none;
+        }
+    </style>
+</head>
+<body>
+  <%- include("./partials/adminHeader.ejs") -%>
+    <div class="container">
+        <h1>Upload Challenge</h1>
+        <form id="challengeForm" method="post" action="/admin/addChallenge">
+            <div class="form-group">
+                <label for="challengeName">Challenge Name</label>
+                <input type="text" id="challengeName" name="name" class="form-control" required>
+                <div class="error-message" id="challengeNameError"></div>
+            </div>
+            <div class="form-group">
+                <label for="challengeName">Main Language</label>
+                <input type="text" id="" name="language" class="form-control" required>
+            </div>
+            <div class="form-group">
+                <label for="challengeName">Exp Point</label>
+                <input type="number" id="exp" name="expPointReward" class="form-control" required>
+                <div class="error-message" id="challengeNameError"></div>
+            </div>
+            <div class="form-group">
+                <label for="status">Status</label>
+                <select id="status" name="status" class="form-control" required>
+                    <option value="">Select status</option>
+                    <option value="open">Open</option>
+                    <option value="pending">Pending</option>
+                    <option value="closed">Closed</option>
+                </select>
+                <div class="error-message" id="statusError"></div>
+            </div>
+            <div class="form-group">
+                <label for="status">level</label>
+                <select id="level" name="level" class="form-control" required>
+                    <option value="">Select status</option>
+                    <option value="Easy">Easy</option>
+                    <option value="Medium">Medium</option>
+                    <option value="Hard">Hard</option>
+                </select>
+                <div class="error-message" id="statusError"></div>
+            </div>
+            <div class="form-group">
+                <label for="description">Description</label>
+                <textarea id="description" name="description" class="form-control" required></textarea>
+                <div class="error-message" id="descriptionError"></div>
+            </div>
+            <div class="form-group">
+                <label for="instructions">Instructions</label>
+                <textarea id="instructions" name="instructions" class="form-control" required></textarea>
+                <div class="error-message" id="instructionsError"></div>
+            </div>
+            <div class="form-group">
+                <label for="deadline">Deadline</label>
+                <input type="date" id="deadline" name="deadline" class="form-control" required>
+                <div class="error-message" id="deadlineError"></div>
+            </div>
+            <button type="submit" class="btn btn-primary">Upload Challenge</button>
+        </form>
+    </div>
+
+    <script>
+        document.getElementById('challengeForm').addEventListener('submit', function(e) {
+            e.preventDefault();
+            let isValid = true;
+
+            // Challenge Name validation
+            const challengeName = document.getElementById('challengeName');
+            if (challengeName.value.trim() === '') {
+                showError('challengeNameError', 'Challenge name is required');
+                isValid = false;
+            } else {
+                hideError('challengeNameError');
+            }
+
+            // Status validation
+            const status = document.getElementById('status');
+            if (status.value === '') {
+                showError('statusError', 'Please select a status');
+                isValid = false;
+            } else {
+                hideError('statusError');
+            }
+
+            // Description validation
+            const description = document.getElementById('description');
+            if (description.value.trim() === '') {
+                showError('descriptionError', 'Description is required');
+                isValid = false;
+            } else {
+                hideError('descriptionError');
+            }
+
+            // Instructions validation
+            const instructions = document.getElementById('instructions');
+            if (instructions.value.trim() === '') {
+                showError('instructionsError', 'Instructions are required');
+                isValid = false;
+            } else {
+                hideError('instructionsError');
+            }
+
+            // Deadline validation
+            const deadline = document.getElementById('deadline');
+            if (deadline.value === '') {
+                showError('deadlineError', 'Deadline is required');
+                isValid = false;
+            } else {
+                const selectedDate = new Date(deadline.value);
+                const currentDate = new Date();
+                if (selectedDate <= currentDate) {
+                    showError('deadlineError', 'Deadline must be a future date');
+                    isValid = false;
+                } else {
+                    hideError('deadlineError');
+                }
+            }
+
+            if (isValid) {
+                // Form is valid, you can submit it to the server here
+                alert('Challenge uploaded successfully!');
+                e.currentTarget.submit();
+                //this.reset();
+            }
+        });
+
+        function showError(elementId, message) {
+            const errorElement = document.getElementById(elementId);
+            errorElement.textContent = message;
+            errorElement.style.display = 'block';
+        }
+
+        function hideError(elementId) {
+            const errorElement = document.getElementById(elementId);
+            errorElement.style.display = 'none';
+        }
+    </script>
+</body>
+</html>

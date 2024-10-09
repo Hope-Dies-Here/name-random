@@ -1,0 +1,315 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Register - CodeChallenge Hub</title>
+    <link href="/header.css" rel="stylesheet" />
+    <style>
+        :root {
+            --color-bg: #f6f8fa;
+            --color-text: #24292e;
+            --color-border: #e1e4e8;
+            --color-btn-bg: #2ea44f;
+            --color-btn-text: #ffffff;
+            --color-btn-border: rgba(27,31,35,0.15);
+            --color-btn-shadow: 0 1px 0 rgba(27,31,35,0.1);
+            --color-btn-hover-bg: #2c974b;
+            --color-link: #0366d6;
+            --color-header-bg: #24292e;
+            --color-input-border: #e1e4e8;
+            --color-input-shadow: inset 0 1px 2px rgba(27,31,35,0.075);
+            --color-error: #cb2431;
+            --font-sans: -apple-system,BlinkMacSystemFont,"Poppins", "Segoe UI",Helvetica,Arial,sans-serif,"Apple Color Emoji","Segoe UI Emoji";
+        }
+
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+        }
+
+        body {
+            font-family: var(--font-sans);
+            line-height: 1.5;
+            color: var(--color-text);
+            background-color: var(--color-bg);
+        }
+        .container{
+          padding-inline: 1rem;
+        }
+        main {
+            max-width: 400px;
+            margin: 40px auto;
+            padding: 24px;
+            background-color: #ffffff;
+            border: 1px solid var(--color-border);
+            border-radius: 6px;
+        }
+
+        h1 {
+            font-size: 24px;
+            font-weight: 300;
+            letter-spacing: -0.5px;
+            text-align: center;
+            margin-bottom: 24px;
+        }
+form{
+  
+          padding: 1rem;
+}
+        .form-group {
+            margin-bottom: 16px;
+        }
+
+        label {
+            display: block;
+            margin-bottom: 8px;
+            font-weight: 600;
+        }
+
+        .form-control {
+            width: 100%;
+            padding: 5px 12px;
+            font-size: 14px;
+            line-height: 20px;
+            color: var(--color-text);
+            background-color: #ffffff;
+            background-repeat: no-repeat;
+            background-position: right 8px center;
+            border: 1px solid var(--color-input-border);
+            border-radius: 6px;
+            outline: none;
+            box-shadow: var(--color-input-shadow);
+        }
+
+        .form-control:focus {
+            border-color: #0366d6;
+            box-shadow: 0 0 0 3px rgba(3,102,214,0.3);
+        }
+
+        .password-toggle {
+            position: relative;
+        }
+
+        .password-toggle .toggle-password {
+            position: absolute;
+            right: 10px;
+            top: 50%;
+            transform: translateY(-50%);
+            cursor: pointer;
+            user-select: none;
+        }
+
+        .checkbox-group {
+            display: flex;
+            align-items: center;
+            margin-bottom: 16px;
+        }
+
+        .checkbox-group input[type="checkbox"] {
+            margin-right: 8px;
+        }
+
+        .btn {
+            display: inline-block;
+            padding: 5px 16px;
+            font-size: 14px;
+            font-weight: 500;
+            line-height: 20px;
+            white-space: nowrap;
+            vertical-align: middle;
+            cursor: pointer;
+            user-select: none;
+            border: 1px solid;
+            border-radius: 6px;
+            appearance: none;
+            width: 100%;
+            text-align: center;
+        }
+
+        .btn-primary {
+            color: var(--color-btn-text);
+            background-color: var(--color-btn-bg);
+            border-color: var(--color-btn-border);
+            box-shadow: var(--color-btn-shadow);
+        }
+
+        .btn-primary:hover {
+            background-color: var(--color-btn-hover-bg);
+        }
+
+        .error-message {
+            color: var(--color-error);
+            font-size: 12px;
+            margin-top: 4px;
+            display: none;
+        }
+
+        #recaptcha {
+            margin-bottom: 16px;
+        }
+        .errMsg{
+          background-color: #e13737;
+          color: white;
+          padding: .5rem 1rem;
+          border-radius: 5px;
+         /* position: absolute;
+          top: 30%;
+          left: 3%;*/
+          opacity: .8;
+          font-size: .75;
+        }
+    </style>
+</head>
+<body>
+    <%- include("./partials/header.ejs") -%>
+    
+    <main class="container">
+        <h1>Create your account</h1>
+        <% if(messages.error) { %>
+          <div class="errMsg">
+              <%= messages.error %>
+          </div>
+        <% } %>
+        <form id="registrationForm" method="post" action="/approval">
+            <div class="form-group">
+                <label for="name">Name</label>
+                <input type="text" id="name" name="name" class="form-control" required>
+                <div class="error-message" id="nameError"></div>
+            </div>
+            <div class="form-group">
+                <label for="username">Username</label>
+                <input type="text" id="username" name="username" class="form-control" required>
+                <div class="error-message" id="usernameError"></div>
+            </div>
+            <div class="form-group">
+                <label for="password">Password</label>
+                <div class="password-toggle">
+                    <input type="password" id="password" name="password" class="form-control" required>
+                    <span class="toggle-password" onclick="togglePassword('password')">️👀</span>
+                </div>
+                <div class="error-message" id="passwordError"></div>
+            </div>
+            <div class="form-group">
+                <label for="confirmPassword">Confirm Password</label>
+                <div class="password-toggle">
+                    <input type="password" id="confirmPassword" name="confirmPassword" class="form-control" required>
+                    <span class="toggle-password" onclick="togglePassword('confirmPassword')">️👀</span>
+                </div>
+                <div class="error-message" id="confirmPasswordError"></div>
+            </div>
+            <div class="form-group">
+                <label for="githubLink">GitHub Link (optional)</label>
+                <input type="url" id="githubLink" name="githubLink" class="form-control">
+                <div class="error-message" id="githubLinkError"></div>
+            </div>
+            <div class="checkbox-group">
+                <input type="checkbox" id="termsAccept" name="termsAccept" required>
+                <label for="termsAccept">I accept the terms and policies</label>
+            </div>
+            <div id="recaptcha" class="g-recaptcha" data-sitekey="6LfXiVsqAAAAACtIAd2Q9aPe57Ws03_yKbpgmhxW"></div>
+            <button type="submit" class="btn btn-primary">Create account</button>
+        </form>
+    </main>
+
+    <script src="https://www.google.com/recaptcha/api.js" async defer></script>
+    <script>
+        function togglePassword(inputId) {
+            const input = document.getElementById(inputId);
+            input.type = input.type === 'password' ? 'text' : 'password';
+        }
+
+        document.getElementById('registrationForm').addEventListener('submit', function(e) {
+            e.preventDefault();
+            let isValid = true;
+
+            // Name validation
+            const name = document.getElementById('name');
+            if (name.value.trim() === '') {
+                showError('nameError', 'Name is required');
+                isValid = false;
+            } else {
+                hideError('nameError');
+            }
+
+            // Username validation
+            const username = document.getElementById('username');
+            if (username.value.trim() === '') {
+                showError('usernameError', 'Username is required');
+                isValid = false;
+            } else {
+                hideError('usernameError');
+            }
+
+            // Password validation
+            const password = document.getElementById('password');
+            if (password.value.length < 3) {
+                showError('passwordError', 'Password must be at least 3 characters long');
+                isValid = false;
+            } else {
+                hideError('passwordError');
+            }
+
+            // Confirm password validation
+            const confirmPassword = document.getElementById('confirmPassword');
+            if (confirmPassword.value !== password.value) {
+                showError('confirmPasswordError', 'Passwords do not match');
+                isValid = false;
+            } else {
+                hideError('confirmPasswordError');
+            }
+
+            // GitHub link validation (optional)
+            const githubLink = document.getElementById('githubLink');
+            if (githubLink.value && !isValidUrl(githubLink.value)) {
+                showError('githubLinkError', 'Please enter a valid URL');
+                isValid = false;
+            } else {
+                hideError('githubLinkError');
+            }
+
+            // Terms acceptance validation
+            const termsAccept = document.getElementById('termsAccept');
+            if (!termsAccept.checked) {
+                alert('Please accept the terms and policies');
+                isValid = false;
+            }
+
+            // reCAPTCHA validation
+            const recaptchaResponse = grecaptcha.getResponse();
+            if (recaptchaResponse.length === 0) {
+                alert('Please complete the reCAPTCHA');
+                isValid = false;
+            }
+
+            if (isValid) {
+                // Form is valid, you can submit it to the server here
+                e.currentTarget.submit();
+                grecaptcha.reset();
+                //this.reset();
+            }
+        });
+
+        function showError(elementId, message) {
+            const errorElement = document.getElementById(elementId);
+            errorElement.textContent = message;
+            errorElement.style.display = 'block';
+        }
+
+        function hideError(elementId) {
+            const errorElement = document.getElementById(elementId);
+            errorElement.style.display = 'none';
+        }
+
+        function isValidUrl(string) {
+            try {
+                new URL(string);
+                return true;
+            } catch (_) {
+                return false;
+            }
+        }
+    </script>
+</body>
+</html>

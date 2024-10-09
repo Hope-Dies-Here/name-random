@@ -1,0 +1,278 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>CodeChallenge Hub</title>
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Poppins:ital,wght@0,100;0,200;0,300;0,400;0,500;0,600;0,700;0,800;0,900;1,100;1,200;1,300;1,400;1,500;1,600;1,700;1,800;1,900&family=Teko:wght@300..700&display=swap');
+        :root {
+            --color-bg: #f6f8fa;
+            --color-text: #24292e;
+            --color-primary: #2ea44f;
+            --color-primary-hover: #2c974b;
+            --color-secondary: #6a737d;
+            --color-border: #e1e4e8;
+            --color-header: #24292e;
+            --color-header-text: #ffffff;
+            --color-card-bg: #ffffff;
+            --color-badge-bg: #0366d6;
+            --color-badge-text: #ffffff;
+            --font-sans: -apple-system, BlinkMacSystemFont, 'Poppins', 'Segoe UI', 'Roboto', 'Oxygen', 'Ubuntu', 'Cantarell', 'Fira Sans', 'Droid Sans', 'Helvetica Neue', sans-serif;
+            --shadow-sm: 0 1px 2px 0 rgba(0, 0, 0, 0.05);
+            --shadow-md: 0 4px 6px -1px rgba(0, 0, 0, 0.1), 0 2px 4px -1px rgba(0, 0, 0, 0.06);
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+body {
+  font-family: var(--font-sans);
+  line-height: 1.5;
+  color: var(--color-text);
+  background-color: var(--color-bg);
+}
+
+.container {
+  max-width: 1200px;
+  margin: 0 auto;
+  padding: 0 1rem;
+}
+
+header {
+  background-color: var(--color-header);
+  color: var(--color-header-text);
+  padding: 1rem 0;
+  position: sticky;
+  top: 0;
+  z-index: 1000;
+  box-shadow: var(--shadow-sm);
+}
+
+.header-content {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.logo {
+  font-size: 1.5rem;
+  font-weight: bold;
+  font-family: "Teko";
+}
+
+nav {
+  display: flex;
+  gap: 1.5rem;
+}
+
+nav a {
+  color: var(--color-header-text);
+  text-decoration: none;
+  font-weight: 500;
+  font-size: .8rem;
+  transition: opacity 0.2s ease-in-out;
+}
+
+nav a:hover {
+  opacity: 0.8;
+}
+
+        main {
+            display: flex;
+            margin-top: 2rem;
+            gap: 2rem;
+        }
+
+        .sidebar {
+            width: 250px;
+            position: sticky;
+            top: 5rem;
+            height: calc(100vh - 5rem);
+            overflow-y: auto;
+        }
+
+        .sidebar h3 {
+            font-size: 1.2rem;
+            margin-bottom: 1rem;
+            color: var(--color-secondary);
+        }
+
+        .sidebar ul {
+            list-style-type: none;
+        }
+
+        .sidebar li {
+            margin-bottom: 0.75rem;
+        }
+
+        .sidebar a {
+            color: var(--color-text);
+            text-decoration: none;
+            transition: color 0.2s ease-in-out;
+        }
+
+        .sidebar a:hover {
+            color: var(--color-primary);
+        }
+
+        .content {
+            flex: 1;
+        }
+
+        .content-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 2rem;
+        }
+
+        h1 {
+            font-size: 2rem;
+            color: var(--color-text);
+        }
+
+        .btn {
+            background-color: var(--color-primary);
+            color: #ffffff;
+            padding: 0.5rem 1rem;
+            border: none;
+            border-radius: 6px;
+            cursor: pointer;
+            font-size: .8rem;
+            font-weight: 500;
+            transition: background-color 0.2s ease-in-out;
+        }
+
+        .btn:hover {
+            background-color: var(--color-primary-hover);
+        }
+
+        .challenge-card {
+            background-color: var(--color-card-bg);
+            border: 1px solid var(--color-border);
+            border-radius: 8px;
+            padding: 1.5rem;
+            margin-bottom: 1.5rem;
+            transition: box-shadow 0.2s ease-in-out;
+        }
+
+        .challenge-card:hover {
+            box-shadow: var(--shadow-md);
+        }
+
+        .challenge-card h2 {
+            font-size: 1.3rem;
+            margin-bottom: 0.75rem;
+            color: var(--color-text);
+        }
+
+        .challenge-card p {
+            color: var(--color-secondary);
+            margin-bottom: 1rem;
+            font-size: 0.8rem;
+        }
+
+        .challenge-meta {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            font-size: 0.8rem;
+            color: var(--color-secondary);
+        }
+
+        .badge {
+            background-color: var(--color-badge-bg);
+            color: var(--color-badge-text);
+            padding: 0.25rem 0.75rem;
+            border-radius: 2rem;
+            font-size: 0.8rem;
+            font-weight: 500;
+        }
+
+        @media (max-width: 768px) {
+            main {
+                flex-direction: column;
+            }
+
+            .sidebar {
+                width: 100%;
+                position: static;
+                height: auto;
+                margin-bottom: 2rem;
+            }
+
+            .content-header {
+                flex-direction: column;
+                align-items: flex-start;
+                gap: 1rem;
+            }
+        }
+
+        @media (max-width: 480px) {
+            .header-content {
+                flex-direction: column;
+                align-items: flex-start;
+                gap: 1rem;
+            }
+
+            nav {
+                flex-wrap: wrap;
+            }
+        }
+    </style>
+</head>
+<body>
+    <%- include("./partials/header.ejs") -%>
+
+    <div class="container">
+        <main>
+            <div class="content">
+                <div class="content-header">
+                    <h1>Available Challenges</h1>
+                    <button class="btn">Create New Challenge</button>
+                </div>
+                <% challenges.forEach(challenge => { %>
+                  <div class="challenge-card">
+                     <a href="/challenges/<%=challenge.name%>">
+                       <h2><%=challenge.name%></h2>
+                    </a>
+                      <p><%=challenge.description%></p>
+                      <div class="challenge-meta">
+                          <span><%=challenge.language%> • <%=challenge.expPointReward%> XP</span>
+                          <span class="badge"><%=challenge.level%></span>
+                      </div>
+                  </div>
+                  
+              <%  }) %>
+                <div class="challenge-card">
+                    <h2>Build a Responsive Dashboard</h2>
+                    <p>Create a fully responsive admin dashboard using modern HTML, CSS, and JavaScript. Focus on creating reusable components, implementing a grid system, and ensuring cross-browser compatibility.</p>
+                    <div class="challenge-meta">
+                        <span>HTML/CSS/JS • 300 XP</span>
+                        <span class="badge">Medium</span>
+                    </div>
+                </div>
+                <div class="challenge-card">
+                    <h2>Implement a Red-Black Tree</h2>
+                    <p>Design and implement a Red-Black Tree data structure with insertion, deletion, and search operations. This advanced challenge will test your understanding of self-balancing binary search trees and their complex operations.</p>
+                    <div class="challenge-meta">
+                        <span>Python • 750 XP</span>
+                        <span class="badge">Expert</span>
+                    </div>
+                </div>
+                <div class="challenge-card">
+                    <h2>Develop a RESTful API</h2>
+                    <p>Create a RESTful API for a blog application using Node.js and Express. Implement CRUD operations, authentication, and proper error handling. Bonus points for implementing rate limiting and API documentation.</p>
+                    <div class="challenge-meta">
+                        <span>Node.js • 400 XP</span>
+                        <span class="badge">Medium</span>
+                    </div>
+                </div>
+            </div>
+        </main>
+    </div>
+</body>
+</html>

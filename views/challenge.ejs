@@ -1,0 +1,186 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+    <title>Challenge Details - CodeChallenge Hub</title>
+    <link rel="stylesheet" href="/header.css" type="text/css" media="all" />
+    <link rel="stylesheet" href="/details.css" type="text/css" media="all" />
+  </head>
+  <body>
+   
+    <%- include("./partials/header.ejs") -%>
+
+    <main class="container">
+      <div class="challenge-header">
+        <h1 class="challenge-title"><%=challenge.name%></h1>
+        <div class="challenge-meta">
+          <span><%=challenge.language%> • <%=challenge.expPointReward%> XP</span>
+          <span class="badge"><%=challenge.level%></span>
+        </div>
+        <a href="/submit" class="btn">Submit Your Solution</a>
+      </div>
+
+      <div class="challenge-content">
+        <div class="challenge-main">
+          <section class="challenge-description">
+            <h2>Description</h2>
+            <p>
+              <%=challenge.description %>
+            </p>
+          </section>
+
+          <section class="challenge-instructions">
+            <h2>Instructions</h2>
+            <ol>
+              <%-challenge.instructions -%>
+            </ol>
+          </section>
+        </div>
+
+        <aside class="challenge-sidebar">
+          <section class="challenge-submissions">
+            <h2>Recent Submissions</h2>
+            <ul class="submission-list">
+              <% submittedChallenges.forEach(data => { %>
+              
+    <div class="overlay">
+      <div class="popup">
+        <h3>Submission Options</h3>
+        <p class="popup-description">
+          You can visit this submission to view the code or rate it based on its
+          efficiency and implementation. Your ratings help recognize outstanding
+          solutions and provide valuable feedback to the community.
+        </p>
+        <%if(userId && userId != data.submittedBy._id) {%>
+        <div class="rating-container">
+          <div class="star-rating">
+            <span class="star" data-rating="1">★</span>
+            <span class="star" data-rating="2">★</span>
+            <span class="star" data-rating="3">★</span>
+            <span class="star" data-rating="4">★</span>
+            <span class="star" data-rating="5">★</span>
+          </div>
+          <button class="popup-btn popup-btn-primary" id="rateBtn">Rate</button>
+        </div>
+        <%}%>
+        <%if(userId && userId == data.submittedBy._id) {%>
+        <div class="btns-usr">
+          <form method="post" action="/delete/<%=data._id%>" class="popup-buttons">
+            <button type="submit" class="popup-btn popup-btn-secondary del-btn" id="visitBtn">
+              Delete Submission
+            </button>
+          </form>
+          <a href="/update/<%=challenge._id%>" class="popup-update popup-btn popup-btn-primary" id="">
+            Update Submission
+          </a>
+          </div>
+        <%}%>
+        </div>
+      </div>
+                <li class="submission-item" data-id="<%=data._id%>">
+                  <strong><%=data.name%></strong>
+                  <div class="submission-meta">
+                    <span>by <%=data.submittedBy.username%></span>
+                    <span>2 hours ago</span>
+                  </div>
+                </li>
+              <% }) %>
+              <li class="submission-item" data-id="2">
+                <strong>Hybrid Merge-Insertion Sort</strong>
+                <div class="submission-meta">
+                  <span>by Bob Smith</span>
+                  <span>5 hours ago</span>
+                </div>
+              </li>
+              <li class="submission-item" data-id="3">
+                <strong>Parallel Merge Sort</strong>
+                <div class="submission-meta">
+                  <span>by Charlie Brown</span>
+                  <span>1 day ago</span>
+                </div>
+              </li>
+              <li class="submission-item" data-id="4">
+                <strong>Radix Sort for Integers</strong>
+                <div class="submission-meta">
+                  <span>by Diana Martinez</span>
+                  <span>2 days ago</span>
+                </div>
+              </li>
+            </ul>
+          </section>
+        </aside>
+      </div>
+    </main>
+
+
+    <script>
+    document.addEventListener("DOMContentLoaded", async function () {
+      
+        const submissionItems = document.querySelectorAll(".submission-item");
+        const overlay = document.querySelector(".overlay");
+        const ratingContainer = document.querySelector(".rating-container");
+        const popup = document.querySelector(".popup");
+        const visitBtn = document.getElementById("visitBtn");
+        const rateBtn = document.getElementById("rateBtn");
+        const stars = document.querySelectorAll(".star");
+        let currentRating = 0;
+        let submittedChallenges = await JSON.parse('<%-JSON.stringify(submittedChallenges)%>')
+        
+        submissionItems.forEach(item => {
+          item.addEventListener("click", (e) => {
+            const targetId = item.getAttribute('data-id')
+            const targetData = submittedChallenges.find(data => data._id == targetId)
+            overlay.classList.add("active");
+          });
+        });
+  
+        overlay.addEventListener("click", e => {
+          if (e.target === overlay) {
+            stars.forEach(star => {
+              
+              star.classList.remove("active")
+            })
+            currentRating = 0;
+            overlay.classList.remove("active");
+          }
+        });
+  
+  
+        rateBtn.addEventListener("click", () => {
+          if (currentRating > 0) {
+            alert(`Submitting rating: ${currentRating} stars`);
+            overlay.classList.remove("active");
+            currentRating = 0;
+            updateStars();
+          } else {
+            alert("Please select a rating before submitting.");
+          }
+        });
+  
+        stars.forEach(star => {
+          star.addEventListener("click", () => {
+            currentRating = parseInt(star.getAttribute("data-rating"));
+            updateStars();
+          });
+        });
+  
+        function updateStars() {
+          stars.forEach(star => {
+            const rating = parseInt(star.getAttribute("data-rating"));
+            if (rating <= currentRating) {
+              star.classList.add("active");
+            } else {
+              star.classList.remove("active");
+            }
+          });
+        }
+      
+      
+    })
+      /* 
+        
+      */
+    </script>
+  </body>
+</html>

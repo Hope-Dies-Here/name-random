@@ -1,0 +1,83 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Submit Challenge - CodeChallenge Hub</title>
+    <link href="/submit.css"rel="stylesheet" />
+</head>
+<body>
+    <%- include("./partials/header.ejs") -%>
+    <main class="container">
+        <h1 class="page-title">Submit Your Challenge Solution</h1>
+        <% if(messages.error) { %>
+          <div class="errMsg">
+              <%= messages.error %>
+          </div>
+        <% } %>
+        <div class="submit-challenge">
+            <section class="rules">
+                <h2>Submission Rules</h2>
+                <ul>
+                    <li>Your solution must be your own original work.</li>
+                    <li>Make sure your code is well-commented and follows best practices.</li>
+                    <li>Include a brief explanation of your approach in the submission.</li>
+                    <li>Ensure your solution passes all test cases provided in the challenge description.</li>
+                    <li>Your submission should be hosted on a public repository (e.g., GitHub, GitLab).</li>
+                    <li>Do not include any sensitive information in your submission.</li>
+                </ul>
+            </section>
+            <section class="submit-form">
+                <h2>Submit Your Solution</h2>
+                <form id="challengeForm" method="post" action="/submit">
+                    <div>
+                        <label for="challenge">Select Challenge:</label>
+                        <select id="challenge" name="challengeId" required>
+                            <option value="">Choose a challenge</option>
+                          <% challenges.forEach(challenge => { %>
+                            <option data-name="<%=challenge.name%>" value="<%=challenge._id%>"><%=challenge.name%></option>
+                          <% }) %>
+                        </select>
+                    </div>
+                    <div>
+                        <label for="solutionLink">Solution Link:</label>
+                        <input type="url" id="solutionLink" name="link" placeholder="https://github.com/yourusername/your-repo" required>
+                        <input type="text" id="challengeName" name="challengeName" value="" style="display: none">
+                    </div>
+                    <div>
+                        <label for="siteName">Website Title:</label>
+                        <input type="text" id="siteName" name="name" placeholder="Your Website Title (optional)">
+                    </div>
+                    <div>
+                        <label for="description">Description About Your Site:</label>
+                        <textarea id="description" name="description" placeholder="Your Website Title (optional)"> </textarea>
+                    </div>
+                    <button type="submit">Submit Solution</button>
+                </form>
+            </section>
+        </div>
+    </main>
+
+    <script>
+      
+        const select = document.getElementById('challenge')
+        const challengeName = document.getElementById('challengeName')
+        select.addEventListener('change', function(e) {
+          const selected = select.options[select.selectedIndex]
+          name = selected.getAttribute('data-name')
+          challengeName.value = name
+        })
+        document.getElementById('challengeForm').addEventListener('submit', function(e) {
+            e.preventDefault();
+            const challenge = document.getElementById('challenge').value;
+            const solutionLink = document.getElementById('solutionLink').value;
+
+            if (challenge && solutionLink) {
+                e.target.submit()
+            } else {
+                alert('Please fill in all fields before submitting.');
+            }
+        });
+    </script>
+</body>
+</html>
