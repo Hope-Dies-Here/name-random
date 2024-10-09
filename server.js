@@ -2,6 +2,7 @@ const express = require('express');
 const connectDB = require('./config/database.js');
 const session = require('express-session');
 const flash = require('express-flash');
+const MongoStore = require("connect-mongo")(session);
 const path = require('path'); // Import path for resolving directory paths
 
 const app = express();
@@ -20,7 +21,12 @@ app.use(session({
     secret: 'yourSecretKey',
     resave: false,
     saveUninitialized: false,
-    cookie: { secure: false } // Set secure to true in production with HTTPS
+    cookie: { secure: false },// Set secure to true in production with HTTPS
+    store: new MongoStore({
+        url: 'mongodb+srv://sarah:sarah@cluster0.xr5qdwo.mongodb.net/name', //YOUR MONGODB URL
+        ttl: 14 * 24 * 60 * 60 * 24,
+        autoRemove: 'native' 
+    })
 }));
 app.use(flash());
 
