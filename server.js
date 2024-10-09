@@ -2,7 +2,7 @@ const express = require('express');
 const connectDB = require('./config/database.js');
 const session = require('express-session');
 const flash = require('express-flash');
-const MongoStore = require("connect-mongo")(session);
+const MongoStore = require("connect-mongo");
 const path = require('path'); // Import path for resolving directory paths
 
 const app = express();
@@ -17,17 +17,17 @@ app.set('views', path.join(__dirname, 'views')); // Adjust the path as needed
 app.use(express.static(__dirname + '/public'))
 app.use(express.json());
 app.use(express.urlencoded({ extended: true })); // Parse URL-encoded bodies
-app.use(session({
-    secret: 'yourSecretKey',
+const dbString = "mongodb+srv://sarah:sarah@cluster0.xr5qdwo.mongodb.net/name"
+app.use(
+  session({
+    secret: "mysecretkey",
+    cookie: { maxAge: 72000000 },
+    store: MongoStore.create({ mongoUrl: dbString, }),
     resave: false,
-    saveUninitialized: false,
-    cookie: { secure: false },// Set secure to true in production with HTTPS
-    store: new MongoStore({
-        url: 'mongodb+srv://sarah:sarah@cluster0.xr5qdwo.mongodb.net/name', //YOUR MONGODB URL
-        ttl: 14 * 24 * 60 * 60 * 24,
-        autoRemove: 'native' 
-    })
-}));
+    saveUninitialized: true,
+    //store: new MemoryStore({ checkPeriod: 86400000 }),
+  })
+);
 app.use(flash());
 
 // Define routes (assuming routes are in a separate file)
