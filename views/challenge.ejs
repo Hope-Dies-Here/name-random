@@ -44,40 +44,7 @@
             <ul class="submission-list">
               <% submittedChallenges.forEach(data => { %>
               
-    <div class="overlay">
-      <div class="popup">
-        <h3>Submission Options</h3>
-        <p class="popup-description">
-          You can visit this submission to view the code or rate it based on its
-          efficiency and implementation. Your ratings help recognize outstanding
-          solutions and provide valuable feedback to the community.
-        </p>
-        <%if(userId && userId != data.submittedBy._id) {%>
-        <div class="rating-container">
-          <div class="star-rating">
-            <span class="star" data-rating="1">★</span>
-            <span class="star" data-rating="2">★</span>
-            <span class="star" data-rating="3">★</span>
-            <span class="star" data-rating="4">★</span>
-            <span class="star" data-rating="5">★</span>
-          </div>
-          <button class="popup-btn popup-btn-primary" id="rateBtn">Rate</button>
-        </div>
-        <%}%>
-        <%if(userId && userId == data.submittedBy._id) {%>
-        <div class="btns-usr">
-          <form method="post" action="/delete/<%=data._id%>" class="popup-buttons">
-            <button type="submit" class="popup-btn popup-btn-secondary del-btn" id="visitBtn">
-              Delete Submission
-            </button>
-          </form>
-          <a href="/update/<%=challenge._id%>" class="popup-update popup-btn popup-btn-primary" id="">
-            Update Submission
-          </a>
-          </div>
-        <%}%>
-        </div>
-      </div>
+    
                 <li class="submission-item" data-id="<%=data._id%>">
                   <strong><%=data.name%></strong>
                   <div class="submission-meta">
@@ -112,75 +79,183 @@
         </aside>
       </div>
     </main>
+    
+<div class="overlay">
+  <div class="popup">
+    <h3>Solution Details</h3>
+    <ul class="ul-challenge-list" id="ul-challenge-data-list">
+  
+    </ul>
+    
+    <div class="popup-content"></div> <!-- Placeholder for dynamic content -->
+    
+  </div>
+</div>
 
-
-    <script>
-    document.addEventListener("DOMContentLoaded", async function () {
+<script>
+document.addEventListener("DOMContentLoaded", async function () {
+  const submissionItems = document.querySelectorAll(".submission-item");
+  const overlay = document.querySelector(".overlay");
+  
+  const popupContent = document.querySelector(".popup-content");
+  const solutionDetails = document.querySelector("#ul-challenge-data-list");
+  
+  let currentRating = 0;
+  let submittedChallenges = await JSON.parse('<%-JSON.stringify(submittedChallenges)%>');
+  let userId = await '<%=userId%>';
+  let bodyForRating
+  
+  submissionItems.forEach(item => {
+    item.addEventListener("click", (e) => {
+      const targetId = item.getAttribute('data-id');
+      const targetData = submittedChallenges.find(data => data._id == targetId);
+      console.log(targetData)
+      // Clear the popup content
+      popupContent.innerHTML = '';
+      solutionDetails.innerHTML = `
+        <li>
+          <div class="ul-item">
+            <span class="ul-title">Site Name:</span>
+            <span class="ul-answer">${targetData.name}</span>
+          </div>
+          <div class="ul-item">
+            <span class="ul-title">Project Link:</span>
+            <span class="ul-answer"><a href="${targetData.link}">Visit Project</a></span>
+          </div>
+          <div class="ul-item">
+            <span class="ul-title">Uploaded By:</span>
+            <span class="ul-answer"><a href="#">${targetData.submittedBy.name}</a></span>
+          </div>
+          <div class="ul-item">
+            <span class="ul-title">Description:</span>
+            <span class="ul-answer">A brief description of the challenge or project.</span>
+          </div>
+          <div class="ul-footer">
+            <div class="ul-rating">4.7<span class="ul-star">★</span></div>
+            <div class="ul-meta"> • HTML • +1 Exp</div>
+          </div>
+        </li>
+      `;
       
-        const submissionItems = document.querySelectorAll(".submission-item");
-        const overlay = document.querySelector(".overlay");
-        const ratingContainer = document.querySelector(".rating-container");
-        const popup = document.querySelector(".popup");
-        const visitBtn = document.getElementById("visitBtn");
-        const rateBtn = document.getElementById("rateBtn");
-        const stars = document.querySelectorAll(".star");
-        let currentRating = 0;
-        let submittedChallenges = await JSON.parse('<%-JSON.stringify(submittedChallenges)%>')
-        
-        submissionItems.forEach(item => {
-          item.addEventListener("click", (e) => {
-            const targetId = item.getAttribute('data-id')
-            const targetData = submittedChallenges.find(data => data._id == targetId)
-            overlay.classList.add("active");
-          });
-        });
+      if (userId && userId != targetData.submittedBy._id) {
+        // If the logged-in user is not the one who submitted, show rating options
+        popupContent.innerHTML = `
+          <div class="rating-container">
+            <div class="star-rating">
+              <span class="star" data-rating="1">★</span>
+              <span class="star" data-rating="2">★</span>
+              <span class="star" data-rating="3">★</span>
+              <span class="star" data-rating="4">★</span>
+              <span class="star" data-rating="5">★</span>
+            </div>
+           
+            <button class="rateBtnCont" id="rateBtn">
+              <img class='rateBg' src='/img/bigRateBtn.png' />
+            </button>
+            
+          </div>`;
+        // Bind event listeners for stars and rating button
+        bindRatingEvents(targetData);
+      } else if (userId && userId == targetData.submittedBy._id) {
+        // If the logged-in user is the one who submitted, show delete and update options
+        popupContent.innerHTML = `
+          <div class="btns-usr">
+            <form method="post" action="/delete/${targetData._id}" class="popup-buttons">
+              <button type="submit" class="popup-btn popup-btn-secondary del-btn" id="visitBtn">
+                Delete Submission 
+              </button>
+            </form>
+            <a href="/update/${targetData._id}" class="popup-update popup-btn popup-btn-primary">
+              Update Submission
+            </a>
+          </div>`;
+      }
+      
+      updateStars()
+      overlay.classList.add("active");
+      
+      //i declear this data here to get access to targetData id, this data will be used on click event of rate button
+      
+    });
+  });
+  const stars = document.querySelectorAll(".star");
+  overlay.addEventListener("click", e => {
+    if (e.target === overlay) {
+      stars.forEach(star => {
+        star.classList.remove("active");
+      });
+      currentRating = 0;
+      overlay.classList.remove("active");
+    }
+  });
   
-        overlay.addEventListener("click", e => {
-          if (e.target === overlay) {
-            stars.forEach(star => {
-              
-              star.classList.remove("active")
-            })
-            currentRating = 0;
-            overlay.classList.remove("active");
-          }
-        });
-  
-  
-        rateBtn.addEventListener("click", () => {
-          if (currentRating > 0) {
-            alert(`Submitting rating: ${currentRating} stars`);
-            overlay.classList.remove("active");
-            currentRating = 0;
-            updateStars();
-          } else {
-            alert("Please select a rating before submitting.");
-          }
-        });
-  
-        stars.forEach(star => {
-          star.addEventListener("click", () => {
-            currentRating = parseInt(star.getAttribute("data-rating"));
-            updateStars();
-          });
-        });
-  
-        function updateStars() {
-          stars.forEach(star => {
-            const rating = parseInt(star.getAttribute("data-rating"));
-            if (rating <= currentRating) {
-              star.classList.add("active");
-            } else {
-              star.classList.remove("active");
-            }
-          });
+  function bindRatingEvents(targetData) {
+    const rateBtn = document.getElementById("rateBtn");
+    const stars = document.querySelectorAll(".star");
+    
+    const rateBg = document.querySelector(".rateBg");
+    stars.forEach(star => {
+      star.addEventListener("click", () => {
+        currentRating = parseInt(star.getAttribute("data-rating"));
+        updateStars();
+      });
+    });
+
+    rateBtn.addEventListener("click", () => {
+      if (currentRating > 0) {
+        const body = {
+          challengeId: targetData._id,
+          rating: currentRating
         }
-      
-      
-    })
-      /* 
-        
-      */
-    </script>
+        rateBg.src = "/img/loading-loading-gif.gif"
+        rateBtn.setAttribute("disabled", "true")
+        stars.forEach(star => star.classList.add("disableClick"))
+        fetch("/rate", {
+          method: "POST", 
+          headers: {
+            "Content-Type": "application/json"
+          },
+          body: JSON.stringify(body)
+        })
+        .then(response => response.json())
+        .then(data => {
+          if(data.isRated) {
+            alert("you rated " + currentRating + " Star")
+            return console.log(data)
+          }
+          alert(data.message)
+        })
+        .catch(err => {
+          console.log(err)
+          alert("something went wrong")
+        })
+        .finally(() => {
+            rateBg.src = "/img/bigRatedBtn.png"
+            rateBtn.removeAttribute("disabled")
+            //stars.forEach(star => star.classList.remove("disableClick"))
+        })
+        // overlay.classList.remove("active");
+//         currentRating = 0;
+//         updateStars();
+      } else {
+        alert("Please select a rating before submitting.");
+      }
+    });
+  }
+
+  function updateStars() {
+    const stars = document.querySelectorAll(".star");
+    stars.forEach(star => {
+      const rating = parseInt(star.getAttribute("data-rating"));
+      if (rating <= currentRating) {
+        star.classList.add("active");
+      } else {
+        star.classList.remove("active");
+      }
+    });
+  }
+});
+</script>
+
   </body>
 </html>

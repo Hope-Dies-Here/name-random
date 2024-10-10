@@ -7,6 +7,7 @@ const authController = require('../controllers/authController');
 const adminController = require('../controllers/adminController');
 const adminAuth = require('../middleware/adminAuth');
 const userAuth = require('../middleware/auth');
+const updateSolutionAuth = require('../middleware/updateSolutionAuth');
 
 //default route
 router.get('/', challengeController.home);
@@ -38,11 +39,14 @@ router.get('/challenges/:name', challengeController.viewChallenge);
 // Submitted Challenges
 router.get('/submit', userAuth, submittedChallengeController.getSubmitChallenge);
 router.post('/submit', userAuth, submittedChallengeController.submitChallenge);
+
+//rating
 router.post('/rate', userAuth, submittedChallengeController.rateChallenge);
+
 // update submitted challenge
-router.get('/update/:id', userAuth, submittedChallengeController.getUpdateChallenge);
-router.post('/update/:id', userAuth, submittedChallengeController.updateChallenge);
-router.post('/delete/:id', userAuth, submittedChallengeController.deleteChallenge);
+router.get('/update/:id', userAuth, updateSolutionAuth, submittedChallengeController.getUpdateChallenge);
+router.post('/update/:id', userAuth, updateSolutionAuth, submittedChallengeController.updateChallenge);
+router.post('/delete/:id', userAuth, updateSolutionAuth, submittedChallengeController.deleteChallenge);
 
 // admin
 router.get('/admin/login', adminController.getLogin);

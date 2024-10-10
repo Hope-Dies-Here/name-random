@@ -214,8 +214,9 @@ h2 {
 }
 
 .popup h3 {
-  margin-bottom: 1rem;
+  padding-bottom: 1rem;
   font-size: 1.1rem;
+  border-bottom: 1px solid var(--color-border);
 }
 
 .popup-description {
@@ -259,12 +260,7 @@ h2 {
 .popup-btn-secondary:hover {
   background-color: var(--color-border);
 }
-.rating-container{
-  display: flex;
-  align-items: center;
-  gap: 1rem;
-  margin-bottom: 1rem;
-}
+
 .btns-usr{
   display: flex;
   align-items: center;
@@ -277,24 +273,56 @@ h2 {
   width: fit-content;
   background-color: var(--color-star-active)!important;
 }
+.rating-container {
+  display: grid;
+  border: 1px solid var(--color-header);
+  border: 1px solid var(--color-border);
+  grid-template-columns: 2fr 1fr;
+  justify-items: center;
+  gap: 2rem;
+  margin-bottom: 0;
+  width: fit-content;
+  margin-inline: auto;
+  background-color: #fafafa;
+  padding: .5rem 2rem;
+  border-radius: 6px;
+  boox-shadow: inset 1px 1px 2px rgba(0,0,0,.1);
+  maargin-block: -1.2rem -.8rem!important;
+}
 
 .star-rating {
-  display: flex;
+  display: flex; /* Keeps stars horizontally aligned */
   gap: 0.25rem;
+  justify-content: center; /* Optional: centers the stars */
+  position: relative; /* For positioning pseudo-elements */
 }
 
 .star {
-  font-size: 1.75rem;
+  position: relative; /* Position for the pseudo-element */
   color: var(--color-star-inactive);
   cursor: pointer;
-  transition: color 0.2s ease-in-out;
+  transition: color 0.3s ease-in-out, margin 0.3s ease-in-out; /* Add margin transition */
+  display: flex;
+  align-items: center;
+  font-size: 2rem;
+  -webkit-text-stroke: 2px transparent; /* Visible border when active */
 }
 
 .star.active {
   color: var(--color-star-active);
+  -webkit-text-stroke: 2px var(--color-header); /* Visible border when active */
 }
-#rateBtn{
-  background-color: var(--color-star-active)!important;
+
+#rateBtn {
+  /* width: 6rem;
+  height: 2rem;
+  object-fit: cover;
+  text-align: center;
+  background-color: var(--color-header) !important;
+  background-color: white !important;
+  color: var(--color-star-active);
+  border: 1px solid black; */
+  
 }
 .popup-update {
   text-decoration: none;
@@ -323,4 +351,93 @@ h2 {
     align-items: flex-start;
     gap: 0.5rem;
   }
+}
+.ul-challenge-list {
+  list-style: none;
+  padding: 0;
+}
+
+.ul-challenge-list li {
+  padding: 20px 0;
+}
+
+.ul-challenge-list li:last-child {
+  border-bottom: none;
+}
+
+.ul-item {
+  display: grid;
+  justify-content: ;
+  grid-template-columns: 1fr 2fr;
+  align-items: ;
+  margin-bottom: 10px;
+  padding: 5px 0;
+}
+
+.ul-title {
+  font-weight: bold;
+  flex: 1;
+}
+
+.ul-answer {
+  flex: 2;
+  text-align: ;
+  border-bottom: 1px solid var(--color-border);
+}
+
+.ul-answer a {
+  text-decoration: ;
+  color: blue;
+}
+
+.ul-answer a:hover {
+  text-decoration: underline;
+}
+
+.ul-footer {
+  display: flex;
+  justify-content: center;
+  margin-top: 15px;
+  font-size: 14px;
+}
+
+.ul-rating {
+  display: flex;
+  align-items: center;
+}
+
+.ul-star {
+  color: var(--color-star-active);
+  font-size: 1rem;
+  margin-right: 5px;
+}
+
+.ul-meta {
+  color: #666;
+}
+
+.gif{
+  width: 1rem;
+}
+.popup{
+  overflow: clip;
+}
+.rateBtnCont{
+  background-color: transparent;
+  border: none;
+}
+
+.rateBg{
+  width: 5.5rem;
+  height: 4rem;
+  object-fit: cover;
+  border-radius: 50%;
+  boorder: 2px solid var(--color-border);
+  boox-shadow: 1px 2px 8px rgba(0,0,0,.21);
+  margin-block: .25rem;
+}
+
+.disableClick {
+  pointer-events: none;
+  opacity: 0.4;
 }

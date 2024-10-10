@@ -40,7 +40,7 @@ exports.submitChallenge = async (req, res) => {
 exports.getUpdateChallenge = async (req, res) => {
     try {
         const challenge = await challengeRepository.findById(req.params.id);
-        const submittedChallenge = await submittedChallengeRepository.findSubmittedData(req.session.userId)
+        const submittedChallenge = await submittedChallengeRepository.findSubmittedData(req.params.id)
         
           
         if(!submittedChallenge) {
@@ -48,7 +48,7 @@ exports.getUpdateChallenge = async (req, res) => {
           return res.redirect('/challenges')
         }
         
-        res.status(201).render('updateSubmittedData', { userId: req.session.userId, challenge, data: submittedChallenge || [] });
+        res.status(201).render('updateSubmittedData', { userId: req.session.userId, challenge: submittedChallenge.challenge, data: submittedChallenge || [] });
     } catch (err) {
       console.log(err)
         res.status(500).send({"Err": "Server Error, Try Again Latter"});
@@ -59,7 +59,7 @@ exports.updateChallenge = async (req, res) => {
     try {
         const updatedData = await submittedChallengeRepository.updateSolution(req.params.id, req.body)
         
-          console.log(updatedData)
+         
         if(!updatedData) {
           req.flash('error', 'Try Again!')
           return res.redirect('/challenges')
@@ -90,14 +90,90 @@ exports.deleteChallenge = async (req, res) => {
     }
 };
 
+// exports.rateChallenge = async (req, res) => {
+//     try {
+//         await submittedChallengeRepository.updateRating(req.body.submittedChallengeId, {
+//             userId: req.session.userId,
+//             value: req.body.rating,
+//         });
+//         res.status(200).json({ message: 'Rating added successfully', isRated: true });
+//     } catch (err) {
+//         res.status(500).json({ message: 'Rate adding failed', isRated: false });
+//     }
+// };
+
+// Function to submit a new rating
 exports.rateChallenge = async (req, res) => {
     try {
-        await submittedChallengeRepository.updateRating(req.body.submittedChallengeId, {
-            userId: req.user._id,
-            value: req.body.rating,
-        });
-        res.status(200).json({ message: 'Rating added successfully' });
+      console.log(req.body)
+        const { challengeId, rating } = req.body;
+        const userId = req.session.userId
+        
+        // Find the submitted challenge
+        const submittedChallenge = await submittedChallengeRepository.findSubmittedData(challengeId);
+        
+        if (!submittedChallenge) {
+            return res.status(404).json({ message: 'Challenge not found' });
+        }
+      console.log(submittedChallenge)
+        // Check if the user has already rated this challenge
+        const existingRating = submittedChallenge.ratings.find(r => r.userId == userId);
+        
+        if (existingRating) {
+            return res.status(400).json({ message: 'You have already submitted a rating for this challenge' });
+        }
+        
+        // Check for self rating
+        const selfRating = submittedChallenge.submittedBy._id == userId;
+        
+        if (selfRating) {
+            return res.status(400).json({ message: "Don't rate your self!"});
+        }
+
+        // Add the new rating
+        submittedChallenge.ratings.push({ userId, rating });
+        console.log(`Target Id: ${submittedChallenge._id}`)
+        console.log(`Target Name: ${submittedChallenge.name}`)
+        console.log(`Target Rating: ${submittedChallenge.ratings}`)
+        console.log(`Target Data: ${submittedChallenge}`)
+        // Save the updated submitted challenge
+        //await submittedChallengeRepository.update(submittedChallenge._id, submittedChallenge);
+        
+        res.status(200).json({ message: 'Rating submitted successfully', ratings: submittedChallenge.ratings, isRated: true });
     } catch (err) {
-        res.status(500).send(err);
+      console.log(err)
+        res.status(500).json({ message: 'Rate adding failed', isRated: false });
+    }
+};
+
+// Function to update an existing rating
+exports.updateRating = async (req, res) => {
+    try {
+        const { challengeId, newRating } = req.body;
+        const userId = req.session.userId
+        
+        // Find the submitted challenge
+        const submittedChallenge = await submittedChallengeRepository.findByChallengeId(challengeId);
+        
+        if (!submittedChallenge) {
+            return res.status(404).json({ message: 'Challenge not found' });
+        }
+
+        // Find the existing rating for the user
+        const existingRatingIndex = submittedChallenge.ratings.findIndex(r => r.userId === userId);
+        
+        if (existingRatingIndex === -1) {
+            return res.status(400).json({ message: 'You have not rated this challenge yet' });
+        }
+
+        // Update the existing rating
+        submittedChallenge.ratings[existingRatingIndex].rating = newRating;
+        
+        // Save the updated submitted challenge
+        await submittedChallengeRepository.update(submittedChallenge._id, submittedChallenge);
+        
+        res.json({ message: 'Rating updated successfully', ratings: submittedChallenge.ratings, isRated: true });
+    } catch (err) {
+        res.status(500).json({ message: 'Rate updating failed', isRated: false });
     }
 };

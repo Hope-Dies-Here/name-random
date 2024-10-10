@@ -6,7 +6,7 @@ const submittedChallengeSchema = new Schema({
     description: { type: String },
     challenge: { type: Schema.Types.ObjectId, ref: 'Challenge', required: true },
     submittedBy: { type: Schema.Types.ObjectId, ref: 'User', required: true },
-    rating: [{ userId: { type: Schema.Types.ObjectId, ref: 'User' }, value: { type: Number } }],
+    ratings: [{ userId: { type: Schema.Types.ObjectId, ref: 'User' }, rating: { type: Number } }],
     link: { type: String, required: true },
     uploadedDate: { type: Date, default: Date.now }
 });
