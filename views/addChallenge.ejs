@@ -231,21 +231,7 @@
                 hideError('instructionsError');
             }
 
-            // Deadline validation
-            const deadline = document.getElementById('deadline');
-            if (deadline.value === '') {
-                showError('deadlineError', 'Deadline is required');
-                isValid = false;
-            } else {
-                const selectedDate = new Date(deadline.value);
-                const currentDate = new Date();
-                if (selectedDate <= currentDate) {
-                    showError('deadlineError', 'Deadline must be a future date');
-                    isValid = false;
-                } else {
-                    hideError('deadlineError');
-                }
-            }
+          
 
             if (isValid) {
                 // Form is valid, you can submit it to the server here

@@ -30,7 +30,8 @@ class ChallengeRepository {
           expPointReward,
           instructions,
           description,
-          language
+          language,
+          deadline
         } = data
         
         return await Challenge.updateOne({ _id: id }, {
@@ -40,7 +41,8 @@ class ChallengeRepository {
           expPointReward: expPointReward,
           instructions: instructions,
           descriptipn: description,
-          language: language
+          language: language,
+          deadline: deadline,
         }, { new: true })
       } catch (e) {
         console.log(e)

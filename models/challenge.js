@@ -9,6 +9,7 @@ const challengeSchema = new Schema({
     description: { type: String, required: true },
     instructions: { type: String, required: true },
     language: { type: String },
+    deadline: { type: Date }
 });
 
 module.exports = mongoose.model('Challenge', challengeSchema);

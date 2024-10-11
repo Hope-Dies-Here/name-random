@@ -29,7 +29,7 @@ exports.getAddChallenge = async (req, res) => {
 }
 
 exports.addChallenge = async (req, res) => {
-  const { name, level, expPointReward, instruction, description } = req.body
+  const { name, level, expPointReward, instruction, description, deadline } = req.body
   const newChallenge = challengeRepository.createChallenge(req.body)
   res.redirect('/admin/challenges')
 }

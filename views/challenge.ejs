@@ -18,7 +18,10 @@
           <span><%=challenge.language%> • <%=challenge.expPointReward%> XP</span>
           <span class="badge"><%=challenge.level%></span>
         </div>
-        <a href="/submit" class="btn">Submit Your Solution</a>
+          <div class="demfoolclass">
+          <a href="/submit" class="btn">Submit Your Solution</a>
+          <div class="deadline"> deadline: <%=challenge.deadline.toString().split(' ').slice(0, 4).join(' ') %></div>
+        </div>
       </div>
 
       <div class="challenge-content">

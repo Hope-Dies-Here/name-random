@@ -113,8 +113,13 @@ nav a:hover {
             color: var(--color-text);
             text-decoration: none;
             transition: color 0.2s ease-in-out;
+            font-weight: thin;
         }
-
+        .current{
+          
+          color: green!important;
+          
+        }
         .sidebar a:hover {
             color: var(--color-primary);
         }
@@ -233,8 +238,8 @@ nav a:hover {
             <aside class="sidebar">
                 <h3>Categories</h3>
                 <ul>
+                    <li><a class="current" href="#">Web Development</a></li>
                     <li><a href="#">Algorithms</a></li>
-                    <li><a href="#">Web Development</a></li>
                     <li><a href="#">Machine Learning</a></li>
                     <li><a href="#">Database Design</a></li>
                     <li><a href="#">System Design</a></li>
