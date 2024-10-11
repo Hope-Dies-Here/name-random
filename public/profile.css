@@ -226,10 +226,11 @@ main {
 .badge {
   background-color: var(--color-badge-bg);
   color: var(--color-badge-text);
-  padding: 0.1rem 0.5rem;
+  padding: 0.25rem .75rem;
   border-radius: 2rem;
-  font-size: 0.7rem;
+  font-size: 0.75rem;
   font-weight: 500;
+  height: fit-content;
 }
 
 footer {

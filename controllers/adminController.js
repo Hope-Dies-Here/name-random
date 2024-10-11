@@ -6,8 +6,7 @@ exports.getLogin = (req, res) => {
 exports.login = async (req, res) => {
     try {
         const { username, password } = req.body;
-        console.log(username)
-        console.log(password)
+        
         if (username == 'aidmn' && password == 'aa') {
             // Set user session
             req.session.admin = true;
@@ -45,7 +44,6 @@ exports.updateChallenge = async (req, res) => {
   try {
     const id = req.params.id
     const newChallenge = await challengeRepository.updateChallenge(id, req.body)
-    console.log(newChallenge)
     res.redirect('/admin/challenges')
     
   } catch (e) {
@@ -62,7 +60,6 @@ exports.deleteChallenge = async (req, res) => {
 
 exports.getChallenges = async (req, res) => {
   const challenges = await challengeRepository.getAllChallenges()
-  console.log(challenges)
   res.render('challengeLists', { userId: req.session.userId, challenges })
 }
 

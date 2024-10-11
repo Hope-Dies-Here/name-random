@@ -31,6 +31,7 @@ router.get('/status', userController.getStatus);
 
 // User Profile Routes
 router.get('/profile', userAuth, userController.profile);
+router.get('/user', userController.user);
 
 // Challenge Routes
 router.get('/challenges', challengeController.listChallenges);

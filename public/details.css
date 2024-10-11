@@ -1,4 +1,7 @@
 @import url('https://fonts.googleapis.com/css2?family=Poppins:ital,wght@0,100;0,200;0,300;0,400;0,500;0,600;0,700;0,800;0,900;1,100;1,200;1,300;1,400;1,500;1,600;1,700;1,800;1,900&family=Teko:wght@300..700&display=swap');
+
+@import url('https://fonts.googleapis.com/css2?family=Sixtyfour&display=swap');
+
 :root {
   --color-bg: #f6f8fa;
   --color-text: #24292e;
@@ -278,13 +281,13 @@ h2 {
   border: 1px solid var(--color-header);
   border: 1px solid var(--color-border);
   grid-template-columns: 2fr 1fr;
-  justify-items: center;
-  gap: 2rem;
+  align-items: center;
+  gap: 2.5rem;
   margin-bottom: 0;
   width: fit-content;
   margin-inline: auto;
   background-color: #fafafa;
-  padding: .5rem 2rem;
+  padding: .5rem 1.5rem;
   border-radius: 6px;
   boox-shadow: inset 1px 1px 2px rgba(0,0,0,.1);
   maargin-block: -1.2rem -.8rem!important;
@@ -314,19 +317,24 @@ h2 {
 }
 
 #rateBtn {
-  /* width: 6rem;
-  height: 2rem;
-  object-fit: cover;
+ 
+  height: fit-content;
   text-align: center;
-  background-color: var(--color-header) !important;
-  background-color: white !important;
+  background-color: var(--color-header);
   color: var(--color-star-active);
-  border: 1px solid black; */
-  
+  border: 1px solid var(--color-header); 
+  font-family: "Sixtyfour";
+  padding: .618rem 1rem;
+  border-radius: 5px;
 }
 .popup-update {
-  text-decoration: none;
   font-size: .8rem;
+  text-decoration: none;
+}
+
+.ratedBg{
+  background-color: var(--color-header);
+ 
 }
 
 @media (max-width: 768px) {
@@ -408,8 +416,9 @@ h2 {
 
 .ul-star {
   color: var(--color-star-active);
-  font-size: 1rem;
-  margin-right: 5px;
+  font-size: .8rem;
+  margin-inline: 2px 5px;
+  -webkit-text-stroke: 1px black;
 }
 
 .ul-meta {
@@ -440,4 +449,33 @@ h2 {
 .disableClick {
   pointer-events: none;
   opacity: 0.4;
+}
+
+{
+  visibility: hidden;
+  transition: .2s;
+}
+
+
+.pop-msg{
+  visibility: hidden;
+  position: fixed;
+  top: 15%;
+  left: 50%;
+  right: 50%;
+  width: 10rem;
+  text-align: center;
+  transform: translateX(-50%);
+  background-color: var(--color-star-active);
+  color: black;
+  padding: .5rem 1rem;
+  border-radius: .3rem;
+  opacity: 0;
+  transition: .75s;
+  z-index: 99;
+  font-weight: bold;
+}
+.show-pop{
+    visibility: visible;
+    opacity: 1;
 }

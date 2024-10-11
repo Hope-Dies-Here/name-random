@@ -17,6 +17,7 @@
     "express": "^4.21.0",
     "express-flash": "^0.0.2",
     "express-session": "^1.18.0",
+    "lodash": "^4.17.21",
     "mongoose": "^8.7.0"
   }
 }

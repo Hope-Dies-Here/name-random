@@ -8,14 +8,14 @@ class SubmittedChallengeRepository {
 
   async findByChallenge(challengeId) {
     return await SubmittedChallenge.find({ challenge: challengeId }).populate(
-      "submittedBy"
+      "submittedBy challenge"
     );
   }
 
   async findByUser(userId) {
     return await SubmittedChallenge.find({ submittedBy: userId }).populate(
       "submittedBy"
-    );
+    ).populate('challenge');
   }
 
   async findSubmittedData(id) {

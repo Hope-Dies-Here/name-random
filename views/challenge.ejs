@@ -3,14 +3,14 @@
   <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
-    <title>Challenge Details - CodeChallenge Hub</title>
+    <title><%=challenge.name%> Details</title>
     <link rel="stylesheet" href="/header.css" type="text/css" media="all" />
     <link rel="stylesheet" href="/details.css" type="text/css" media="all" />
   </head>
   <body>
    
     <%- include("./partials/header.ejs") -%>
-
+    
     <main class="container">
       <div class="challenge-header">
         <h1 class="challenge-title"><%=challenge.name%></h1>
@@ -53,34 +53,15 @@
                   </div>
                 </li>
               <% }) %>
-              <li class="submission-item" data-id="2">
-                <strong>Hybrid Merge-Insertion Sort</strong>
-                <div class="submission-meta">
-                  <span>by Bob Smith</span>
-                  <span>5 hours ago</span>
-                </div>
-              </li>
-              <li class="submission-item" data-id="3">
-                <strong>Parallel Merge Sort</strong>
-                <div class="submission-meta">
-                  <span>by Charlie Brown</span>
-                  <span>1 day ago</span>
-                </div>
-              </li>
-              <li class="submission-item" data-id="4">
-                <strong>Radix Sort for Integers</strong>
-                <div class="submission-meta">
-                  <span>by Diana Martinez</span>
-                  <span>2 days ago</span>
-                </div>
-              </li>
+             
             </ul>
           </section>
         </aside>
       </div>
     </main>
-    
+<%- include("./partials/footer.ejs") -%>    
 <div class="overlay">
+<p class="pop-msg" id="pop-msg"></p>
   <div class="popup">
     <h3>Solution Details</h3>
     <ul class="ul-challenge-list" id="ul-challenge-data-list">
@@ -96,20 +77,26 @@
 document.addEventListener("DOMContentLoaded", async function () {
   const submissionItems = document.querySelectorAll(".submission-item");
   const overlay = document.querySelector(".overlay");
-  
+  const msg = document.querySelector("#pop-msg")
   const popupContent = document.querySelector(".popup-content");
   const solutionDetails = document.querySelector("#ul-challenge-data-list");
-  
   let currentRating = 0;
-  let submittedChallenges = await JSON.parse('<%-JSON.stringify(submittedChallenges)%>');
+   
+  let submittedChallenges = await <%-JSON.stringify(submittedChallenges)%>;
   let userId = await '<%=userId%>';
-  let bodyForRating
+  let averageRating, currentUser
   
   submissionItems.forEach(item => {
     item.addEventListener("click", (e) => {
       const targetId = item.getAttribute('data-id');
       const targetData = submittedChallenges.find(data => data._id == targetId);
-      console.log(targetData)
+       if(targetData.ratings.length > 0) {
+         averageRating = targetData.ratings.map(item => item.rating).reduce((prev, next) => prev + next)/targetData.ratings.length
+          
+       } else {
+         averageRating = 0
+       }
+       
       // Clear the popup content
       popupContent.innerHTML = '';
       solutionDetails.innerHTML = `
@@ -120,19 +107,19 @@ document.addEventListener("DOMContentLoaded", async function () {
           </div>
           <div class="ul-item">
             <span class="ul-title">Project Link:</span>
-            <span class="ul-answer"><a href="${targetData.link}">Visit Project</a></span>
+            <span class="ul-answer"><a target="_blank" href="${targetData.link}">Visit Project</a></span>
           </div>
           <div class="ul-item">
             <span class="ul-title">Uploaded By:</span>
-            <span class="ul-answer"><a href="#">${targetData.submittedBy.name}</a></span>
+            <span class="ul-answer"><a href="/user?username=${targetData.submittedBy.username}">${targetData.submittedBy.name}</a></span>
           </div>
           <div class="ul-item">
             <span class="ul-title">Description:</span>
-            <span class="ul-answer">A brief description of the challenge or project.</span>
+            <span class="ul-answer">${targetData.description}</span>
           </div>
           <div class="ul-footer">
-            <div class="ul-rating">4.7<span class="ul-star">★</span></div>
-            <div class="ul-meta"> • HTML • +1 Exp</div>
+            <div class="ul-rating"><span id="rating-data">${averageRating}</span><span class="ul-star">★</span></div>
+            <div class="ul-meta"> • ${targetData.challenge.language} • ${targetData.challenge.expPointReward} XP</div>
           </div>
         </li>
       `;
@@ -150,10 +137,21 @@ document.addEventListener("DOMContentLoaded", async function () {
             </div>
            
             <button class="rateBtnCont" id="rateBtn">
-              <img class='rateBg' src='/img/bigRateBtn.png' />
+              RATE
             </button>
             
           </div>`;
+        currentUser = targetData.ratings.find(data => data.userId == userId )
+       if(currentUser) {
+          let rateBtn = document.getElementById("rateBtn");
+          let stars = document.querySelectorAll(".star");
+          
+          currentRating = currentUser.rating
+          
+          rateBtn.innerText = "EDIT"
+          rateBtn.style = "background-color: var(--color-border); color: #000;"
+          stars.forEach(star => star.classList.add("disableClick"))
+       }
         // Bind event listeners for stars and rating button
         bindRatingEvents(targetData);
       } else if (userId && userId == targetData.submittedBy._id) {
@@ -190,10 +188,9 @@ document.addEventListener("DOMContentLoaded", async function () {
   });
   
   function bindRatingEvents(targetData) {
-    const rateBtn = document.getElementById("rateBtn");
-    const stars = document.querySelectorAll(".star");
+    let rateBtn = document.getElementById("rateBtn");
+    let stars = document.querySelectorAll(".star");
     
-    const rateBg = document.querySelector(".rateBg");
     stars.forEach(star => {
       star.addEventListener("click", () => {
         currentRating = parseInt(star.getAttribute("data-rating"));
@@ -202,43 +199,76 @@ document.addEventListener("DOMContentLoaded", async function () {
     });
 
     rateBtn.addEventListener("click", () => {
-      if (currentRating > 0) {
-        const body = {
-          challengeId: targetData._id,
-          rating: currentRating
-        }
-        rateBg.src = "/img/loading-loading-gif.gif"
-        rateBtn.setAttribute("disabled", "true")
-        stars.forEach(star => star.classList.add("disableClick"))
-        fetch("/rate", {
-          method: "POST", 
-          headers: {
-            "Content-Type": "application/json"
-          },
-          body: JSON.stringify(body)
-        })
-        .then(response => response.json())
-        .then(data => {
-          if(data.isRated) {
-            alert("you rated " + currentRating + " Star")
-            return console.log(data)
+      if(rateBtn.innerText == "EDIT") {
+        rateBtn.innerText = "RATE"
+        rateBtn.style = "background-color: var(--color-header);"
+        stars.forEach(star => star.classList.remove("disableClick"))
+      } else if (rateBtn.innerText == "RATE")  {
+        if (currentRating > 0) {
+          
+          const body = {
+            challengeId: targetData._id,
+            rating: currentRating
           }
-          alert(data.message)
-        })
-        .catch(err => {
-          console.log(err)
-          alert("something went wrong")
-        })
-        .finally(() => {
-            rateBg.src = "/img/bigRatedBtn.png"
-            rateBtn.removeAttribute("disabled")
-            //stars.forEach(star => star.classList.remove("disableClick"))
-        })
-        // overlay.classList.remove("active");
-//         currentRating = 0;
-//         updateStars();
+          
+          rateBtn.innerText = "..."
+          stars.forEach(star => star.classList.add("disableClick"))
+          fetch("/rate", {
+            method: "POST", 
+            headers: {
+              "Content-Type": "application/json"
+            },
+            body: JSON.stringify(body)
+          })
+          .then(response => response.json())
+          .then(data => {
+            if(data.isRated) {
+            //   alert("you rated " + currentRating + " Star")
+            if(targetData.ratings.length == 0) {
+              targetData.ratings.push({
+                userId: userId,
+                rating: currentRating
+              })
+            } 
+            
+              const userRateIndex = targetData.ratings.findIndex(i => i.userId == userId)
+              
+              targetData.ratings[userRateIndex].rating = currentRating
+              
+              averageRating = data.ratings.map(item => item.rating).reduce((prev, next) => prev + next)
+              document.getElementById("rating-data").innerText = averageRating
+              
+              showPopMsg(msg, `${currentRating} Stars Rated`)
+              
+              rateBtn.innerText = "EDIT"
+              rateBtn.style = "background-color: var(--color-border); color: #000;"
+              
+              return 
+            }
+            rateBtn.innerText = "RATE"
+            stars.forEach(star => star.classList.remove("disableClick"))
+            rateBtn.style = "background-color: var(--color-header); color: var(--color-star-active);"
+            alert(data.message)
+          })
+          .catch(err => {
+            console.log(err)
+            alert("something went wrong")
+            rateBtn.innerText = "RATE"
+            stars.forEach(star => star.classList.remove("disableClick"))
+            rateBtn.style = "background-color: var(--color-header); color: var(--color-star-active);"
+            
+          })
+          .finally(() => {
+              //stars.forEach(star => star.classList.remove("disableClick"))
+          })
+          // overlay.classList.remove("active");
+  //         currentRating = 0;
+  //         updateStars();
+        } else {
+          alert("Please select a rating before submitting.");
+        }
       } else {
-        alert("Please select a rating before submitting.");
+        alert("Err")
       }
     });
   }
@@ -253,6 +283,19 @@ document.addEventListener("DOMContentLoaded", async function () {
         star.classList.remove("active");
       }
     });
+  }
+  
+  const showPopMsg = (target, message) => {
+  
+    let timeoutId
+    if(timeoutId) clearTimeout(timeoutId)
+    
+      target.classList.add("show-pop")
+      target.innerText = message || " "
+      
+      timeoutId = setTimeout(function() {
+        target.classList.remove("show-pop")
+      }, 2000);
   }
 });
 </script>

@@ -21,7 +21,7 @@ const dbString = "mongodb+srv://sarah:sarah@cluster0.xr5qdwo.mongodb.net/name"
 app.use(
   session({
     secret: "mysecretkey",
-    cookie: { maxAge: 72000000 },
+    cookie: { maxAge: 86400000 },
     store: MongoStore.create({ mongoUrl: dbString, }),
     resave: false,
     saveUninitialized: true,

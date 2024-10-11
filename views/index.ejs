@@ -3,7 +3,8 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>CodeChallenge Hub</title>
+    <title>name.random()</title>
+    <link href="/header.css" rel="stylesheet" />
     <style>
         @import url('https://fonts.googleapis.com/css2?family=Poppins:ital,wght@0,100;0,200;0,300;0,400;0,500;0,600;0,700;0,800;0,900;1,100;1,200;1,300;1,400;1,500;1,600;1,700;1,800;1,900&family=Teko:wght@300..700&display=swap');
         :root {
@@ -233,7 +234,6 @@ nav a:hover {
                 <h3>Categories</h3>
                 <ul>
                     <li><a href="#">Algorithms</a></li>
-                    <li><a href="#">Data Structures</a></li>
                     <li><a href="#">Web Development</a></li>
                     <li><a href="#">Machine Learning</a></li>
                     <li><a href="#">Database Design</a></li>
@@ -243,42 +243,23 @@ nav a:hover {
             <div class="content">
                 <div class="content-header">
                     <h1>Available Challenges</h1>
-                    <button class="btn">Create New Challenge</button>
+                    <button class="btn">Just a Random Button</button>
                 </div>
-                <div class="challenge-card">
-                    <h2>Optimize Array Sorting Algorithm</h2>
-                    <p>Implement an efficient sorting algorithm to arrange a large dataset of numbers in ascending order. This challenge will test your understanding of advanced sorting techniques and their optimizations for big data scenarios.</p>
-                    <div class="challenge-meta">
-                        <span>JavaScript • 500 XP</span>
-                        <span class="badge">Hard</span>
-                    </div>
-                </div>
-                <div class="challenge-card">
-                    <h2>Build a Responsive Dashboard</h2>
-                    <p>Create a fully responsive admin dashboard using modern HTML, CSS, and JavaScript. Focus on creating reusable components, implementing a grid system, and ensuring cross-browser compatibility.</p>
-                    <div class="challenge-meta">
-                        <span>HTML/CSS/JS • 300 XP</span>
-                        <span class="badge">Medium</span>
-                    </div>
-                </div>
-                <div class="challenge-card">
-                    <h2>Implement a Red-Black Tree</h2>
-                    <p>Design and implement a Red-Black Tree data structure with insertion, deletion, and search operations. This advanced challenge will test your understanding of self-balancing binary search trees and their complex operations.</p>
-                    <div class="challenge-meta">
-                        <span>Python • 750 XP</span>
-                        <span class="badge">Expert</span>
-                    </div>
-                </div>
-                <div class="challenge-card">
-                    <h2>Develop a RESTful API</h2>
-                    <p>Create a RESTful API for a blog application using Node.js and Express. Implement CRUD operations, authentication, and proper error handling. Bonus points for implementing rate limiting and API documentation.</p>
-                    <div class="challenge-meta">
-                        <span>Node.js • 400 XP</span>
-                        <span class="badge">Medium</span>
-                    </div>
-                </div>
+                <% challenges.forEach(data => { %>
+                  
+                  <div class="challenge-card">
+                      <h2><a href="/challenges/<%=data.name%>"><%= data.name %></a></h2>
+                      <p><%= data.description %></p>
+                      <div class="challenge-meta">
+                          <span><%= data.language %> • <%= data.expPointReward %> XP</span>
+                          <span class="badge"><%= data.level %></span>
+                      </div>
+                  </div>
+               <% })%>
+                
             </div>
         </main>
     </div>
+    <%- include("./partials/footer.ejs") -%>
 </body>
 </html>

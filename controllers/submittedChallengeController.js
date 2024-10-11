@@ -1,6 +1,6 @@
 const submittedChallengeRepository = require('../repositories/submittedChallengeRepository');
 const challengeRepository = require('../repositories/challengeRepository');
-
+const _ = require("lodash")
 exports.getSubmitChallenge = async (req, res) => {
     try {
         const availableChallenges = await challengeRepository.findByStatus('open');
@@ -105,7 +105,6 @@ exports.deleteChallenge = async (req, res) => {
 // Function to submit a new rating
 exports.rateChallenge = async (req, res) => {
     try {
-      console.log(req.body)
         const { challengeId, rating } = req.body;
         const userId = req.session.userId
         
@@ -115,12 +114,17 @@ exports.rateChallenge = async (req, res) => {
         if (!submittedChallenge) {
             return res.status(404).json({ message: 'Challenge not found' });
         }
-      console.log(submittedChallenge)
         // Check if the user has already rated this challenge
         const existingRating = submittedChallenge.ratings.find(r => r.userId == userId);
         
+        const existingRatingIndex = submittedChallenge.ratings.findIndex(r => r.userId == userId);
+        
         if (existingRating) {
-            return res.status(400).json({ message: 'You have already submitted a rating for this challenge' });
+            submittedChallenge.ratings[existingRatingIndex].rating = rating;
+          // Save the updated submitted challenge
+          await submittedChallengeRepository.update(submittedChallenge._id, submittedChallenge);
+          
+          return res.json({ message: 'Rating updated successfully', ratings: submittedChallenge.ratings, isRated: true });
         }
         
         // Check for self rating
@@ -132,13 +136,10 @@ exports.rateChallenge = async (req, res) => {
 
         // Add the new rating
         submittedChallenge.ratings.push({ userId, rating });
-        console.log(`Target Id: ${submittedChallenge._id}`)
-        console.log(`Target Name: ${submittedChallenge.name}`)
-        console.log(`Target Rating: ${submittedChallenge.ratings}`)
-        console.log(`Target Data: ${submittedChallenge}`)
-        // Save the updated submitted challenge
-        //await submittedChallengeRepository.update(submittedChallenge._id, submittedChallenge);
         
+        // Save the updated submitted challenge
+        await submittedChallengeRepository.update(submittedChallenge._id, submittedChallenge);
+        const av = _.sumBy(submittedChallenge.ratings, 'rating')
         res.status(200).json({ message: 'Rating submitted successfully', ratings: submittedChallenge.ratings, isRated: true });
     } catch (err) {
       console.log(err)

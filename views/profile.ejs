@@ -49,7 +49,7 @@
                 ></path>
               </svg>
               <a
-                href="https://johndoe.com"
+                href="<%=user.githubLink%>"
                 target="_blank"
                 rel="noopener noreferrer"
                 >Profile</a
@@ -70,51 +70,24 @@
 
       <h2 class="section-title">Submitted Challenges</h2>
       <div class="challenge-grid">
+      <% completedChallenges.forEach(challenge => { %>
         <div class="challenge-item">
-          <div class="challenge-title">Optimize Array Sorting Algorithm</div>
+          <div class="challenge-title">
+            <%=challenge.challenge.name%>
+          <div>
           <div class="challenge-description">
-            Implemented an efficient sorting algorithm for large datasets.
+            <%=challenge.description%>
           </div>
           <div class="challenge-meta">
-            <span>Completed on May 15, 2023</span>
-            <span class="badge">Hard</span>
+            <span>Completed on <%=challenge.uploadedDate.toString().split(' ').slice(0, 4).join(' ')%> </span>
+            <span class="badge"><%=challenge.challenge.level%></span>
           </div>
         </div>
-        <div class="challenge-item">
-          <div class="challenge-title">Implement a RESTful API</div>
-          <div class="challenge-description">
-            Created a fully functional RESTful API with authentication and error
-            handling.
-          </div>
-          <div class="challenge-meta">
-            <span>Completed on April 22, 2023</span>
-            <span class="badge">Medium</span>
-          </div>
-        </div>
-        <div class="challenge-item">
-          <div class="challenge-title">Build a Responsive Dashboard</div>
-          <div class="challenge-description">
-            Designed and developed a responsive dashboard using modern CSS
-            techniques.
-          </div>
-          <div class="challenge-meta">
-            <span>Completed on March 10, 2023</span>
-            <span class="badge">Easy</span>
-          </div>
-        </div>
+      <% }) %>
+        
       </div>
     </main>
 
-    <footer>
-      <div class="container footer-content">
-        <div class="footer-logo">CodeChallenge Hub</div>
-        <div class="footer-links">
-          <a href="#">About</a>
-          <a href="#">Terms</a>
-          <a href="#">Privacy</a>
-          <a href="#">Contact</a>
-        </div>
-      </div>
-    </footer>
+    <%- include("./partials/footer.ejs") -%>
   </body>
 </html>

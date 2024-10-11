@@ -3,7 +3,8 @@ const submittedChallengeRepository = require('../repositories/submittedChallenge
 
 exports.home = async (req, res) => {
     try {
-        res.render("index", { userId: req.session.userId });
+        const challenges = await challengeRepository.getAllChallenges()
+        res.render("index", { userId: req.session.userId, challenges });
     } catch (err) {
         res.status(500).send(err);
     }

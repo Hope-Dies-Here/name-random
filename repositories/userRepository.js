@@ -31,6 +31,7 @@ class UserRepository {
     async findApproval(timeStamp) {
         return await Approval.findOne({timeStamp: timeStamp});
     }
+    
 
 }
 

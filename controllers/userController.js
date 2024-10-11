@@ -13,6 +13,26 @@ exports.profile = async (req, res) => {
     }
 };
 
+exports.user = async (req, res) => {
+    try {
+      const user = await userRepository.findByUsername(req.query.username);
+      
+        if(user._id == req.query.username) {
+          return res.redirect('/profile')
+        }
+        
+        if(req.query.username && user._id){
+          const completedChallenges = await submittedChallengeRepo.findByUser(user._id)
+          return res.render("profile", { user, completedChallenges, userId: req.session.id });
+      }
+      
+      res.send('No user Found')
+    } catch (err) {
+      console.log(err)
+        res.status(500).send(err);
+    }
+};
+
 exports.getApproval = async (req, res) => {
     try {
         const users = await userRepository.getApproval();
