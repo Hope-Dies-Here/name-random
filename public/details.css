@@ -483,6 +483,18 @@ h2 {
 .demfoolclass{
   display: flex;
   justify-content: space-between;
+  color: var(--color-secondary);
+  color: #b31616;
+  font-size: .8rem;
 }
 
-.
+
+@media (max-width: 768px) { 
+  .demfoolclass{
+    display: grid;
+    gap: .5rem;
+  }
+  .demfoolclass .deadline{
+    margin-left: 5px;
+  }
+}

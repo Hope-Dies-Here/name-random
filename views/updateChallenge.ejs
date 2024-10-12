@@ -189,7 +189,7 @@
             </div>
             <div class="form-group">
                 <label for="deadline">Deadline</label>
-                <input type="date" id="deadline" class="form-control" required>
+                <input type="date" name="deadline" id="deadline" class="form-control" required>
                 <div class="error-message" id="deadlineError"></div>
             </div>
             <button type="submit" class="btn btn-primary">Update Challenge</button>
@@ -241,21 +241,7 @@
                 hideError('instructionsError');
             }
 
-            // Deadline validation
-            const deadline = document.getElementById('deadline');
-            if (deadline.value === '') {
-                showError('deadlineError', 'Deadline is required');
-                isValid = false;
-            } else {
-                const selectedDate = new Date(deadline.value);
-                const currentDate = new Date();
-                if (selectedDate <= currentDate) {
-                    showError('deadlineError', 'Deadline must be a future date');
-                    isValid = false;
-                } else {
-                    hideError('deadlineError');
-                }
-            }
+           
 
             if (isValid) {
                 // Form is valid, you can submit it to the server here

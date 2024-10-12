@@ -1,4 +1,5 @@
 const challengeRepository = require('../repositories/challengeRepository');
+const submittedChallengeRepository = require('../repositories/submittedChallengeRepository');
 exports.getLogin = (req, res) => { 
     res.render('./admin/login', { userId: req.session.userId, messages: req.flash() })
 }
@@ -54,7 +55,9 @@ exports.updateChallenge = async (req, res) => {
 
 exports.deleteChallenge = async (req, res) => {
   const name = req.params.name
+  const ch = await challengeRepository.findByName(name)
   await challengeRepository.deleteChallenge(name)
+  await submittedChallengeRepository.deleteByChallengeId(ch._id)
   res.redirect(`/admin/challenges`)
 }
 

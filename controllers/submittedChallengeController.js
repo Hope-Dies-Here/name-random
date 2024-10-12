@@ -13,7 +13,7 @@ exports.getSubmitChallenge = async (req, res) => {
 
 exports.submitChallenge = async (req, res) => {
     try {
-          const dataExist = await submittedChallengeRepository.findByUser(req.session.userId)
+          const dataExist = await submittedChallengeRepository.findByUserAndChallenge(req.session.userId, req.body.challengeId)
           if(dataExist && dataExist.length > 0) {
             console.log(dataExist)
             req.flash('error', `Don't submit twice!!`)

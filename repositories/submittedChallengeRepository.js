@@ -13,9 +13,11 @@ class SubmittedChallengeRepository {
   }
 
   async findByUser(userId) {
-    return await SubmittedChallenge.find({ submittedBy: userId }).populate(
-      "submittedBy"
-    ).populate('challenge');
+    return await SubmittedChallenge.find({ submittedBy: userId }).populate("challenge submittedBy");
+  }
+  
+  async findByUserAndChallenge(userId, challengeId) {
+    return await SubmittedChallenge.find({ submittedBy: userId, challenge: challengeId }).populate("challenge submittedBy");
   }
 
   async findSubmittedData(id) {
@@ -30,6 +32,10 @@ class SubmittedChallengeRepository {
 
   async deleteSubmittedData(id) {
     return await SubmittedChallenge.deleteOne({ _id: id });
+  }
+
+  async deleteByChallengeId(id) {
+    return await SubmittedChallenge.deleteMany({ challenge: id });
   }
 
   async updateRating(submittedChallengeId, rating) {

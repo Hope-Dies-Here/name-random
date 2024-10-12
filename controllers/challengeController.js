@@ -22,6 +22,7 @@ exports.listChallenges = async (req, res) => {
 exports.viewChallenge = async (req, res) => {
     try {
         const challenge = await challengeRepository.findByName(req.params.name);
+        console.log(challenge)
         const submittedChallenges = await submittedChallengeRepository.findByChallenge(challenge._id);
         res.render("challenge", { userId: req.session.userId, challenge, submittedChallenges });
     } catch (err) {

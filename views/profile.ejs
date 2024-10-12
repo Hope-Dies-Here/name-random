@@ -52,7 +52,7 @@
                 href="<%=user.githubLink%>"
                 target="_blank"
                 rel="noopener noreferrer"
-                >Profile</a
+                >Github Profile</a
               >
             </span>
           </div>
@@ -70,20 +70,22 @@
 
       <h2 class="section-title">Submitted Challenges</h2>
       <div class="challenge-grid">
+      <% if (completedChallenges.length > 0) { %>
       <% completedChallenges.forEach(challenge => { %>
         <div class="challenge-item">
           <div class="challenge-title">
-            <%=challenge.challenge.name%>
-          <div>
+            <%=challenge.name%>
+          </div>
           <div class="challenge-description">
             <%=challenge.description%>
           </div>
           <div class="challenge-meta">
             <span>Completed on <%=challenge.uploadedDate.toString().split(' ').slice(0, 4).join(' ')%> </span>
-            <span class="badge"><%=challenge.challenge.level%></span>
+            <span class="badge"><%=challenge.challenge?.level%></span>
           </div>
         </div>
       <% }) %>
+      <% } %>
         
       </div>
     </main>
