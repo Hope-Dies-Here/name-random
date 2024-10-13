@@ -31,6 +31,8 @@ router.get('/status', userController.getStatus);
 
 // User Profile Routes
 router.get('/profile', userAuth, userController.profile);
+router.get('/profile/update', userAuth, userController.getUpdateUser);
+router.post('/profile/update', userAuth, userController.updateUser);
 router.get('/user', userController.user);
 
 // Challenge Routes
@@ -66,5 +68,8 @@ router.post('/admin/deleteChallenge/:name', adminController.deleteChallenge);
 
 router.get('/admin/addChallenge', adminController.getAddChallenge);
 router.post('/admin/addChallenge', adminController.addChallenge);
+
+
+//router.post('/admin/usereList', adminController.usersList);
 
 module.exports = router;

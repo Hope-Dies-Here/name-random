@@ -125,3 +125,12 @@ footer {
   }
  
 }
+ .challenge-card h2 {
+            font-size: 1.25rem;
+            margin-bottom: 0.5rem;
+            text-decoration: !important;
+            color: var(--color-text);
+        }
+ .challenge-card h2 > a {
+            text-decoration: !important;
+        }

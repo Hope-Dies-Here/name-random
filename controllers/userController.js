@@ -33,6 +33,31 @@ exports.user = async (req, res) => {
     }
 };
 
+exports.getUpdateUser = async (req, res) => {
+    try {
+      const user = await userRepository.findById(req.session.userId);
+        
+      res.render("updateForUser", { user, userId: req.session.id });
+      
+    } catch (err) {
+      console.log(err)
+        res.status(500).send(err);
+    }
+};
+
+exports.updateUser = async (req, res) => {
+    try {
+        
+        const updatedUser = await userRepository.updateUser(req.session.userId, req.body)
+        return res.redirect("/profile");
+      
+      res.send('No user Found')
+    } catch (err) {
+      console.log(err)
+        res.status(500).send(err);
+    }
+};
+
 exports.getApproval = async (req, res) => {
     try {
         const users = await userRepository.getApproval();

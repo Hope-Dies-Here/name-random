@@ -170,12 +170,12 @@
               <input type="text" id="username" name="username" class="form-control" value="<%=user.username%>" readonly>
           </div>
           <div class="form-group">
-              <label for="password">Email</label>
+              <label for="password">Passwd</label>
               <input type="text" id="password" name="password" class="form-control" value="<%=user.password%>" readonly>
           </div>
           <div class="form-group">
               <label for="githubLink">GitHub Link</label>
-              <input type="url" id="githubLink" name="githubLink" class="form-control" value="<%user.guthubLink%>" readonly>
+              <input type="url" id="githubLink" name="githubLink" class="form-control" value="<%user.githubLink%>" readonly>
           </div>
           <div class="form-group">
               <label for="githubLink">Time Stamp</label>
@@ -204,7 +204,7 @@
         function sendRegistrationDecision(decision) {
             data.status = decision;
 
-            fetch('/admin/register', {
+            fetch('register', {
                 method: 'POST',
                 headers: {
                     'Content-Type': 'application/json',
@@ -216,6 +216,7 @@
                 console.log('Success:', data);
                 alert(`User registration ${decision}!`);
                 // Here you might want to redirect or update the UI
+                location.reload()
             })
             .catch((error) => {
                 console.error('Error:', error);
@@ -231,7 +232,7 @@
 
         declineBtn.addEventListener('click', function() {
             if (confirm('Are you sure you want to decline this user registration?')) {
-                fetch('http://localhost:5000/admin/reject', {
+                fetch('reject', {
                   method: 'POST',
                   headers: {
                       'Content-Type': 'application/json',

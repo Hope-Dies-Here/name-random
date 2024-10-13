@@ -38,6 +38,10 @@ class SubmittedChallengeRepository {
     return await SubmittedChallenge.deleteMany({ challenge: id });
   }
 
+  async deleteByUserId(id) {
+    return await SubmittedChallenge.deleteMany({ submittedBy: id });
+  }
+
   async updateRating(submittedChallengeId, rating) {
     const submission = await SubmittedChallenge.findById(submittedChallengeId);
     submission.rating.push(rating);

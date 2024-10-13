@@ -1,0 +1,105 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <titl> Users List</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            margin: 0;
+            padding: 20px;
+            background-color: #f0f0f0;
+        }
+        .container {
+            max-width: 600px;
+            margin: 0 auto;
+            background-color: #fff;
+            padding: 20px;
+            border: 1px solid #ddd;
+        }
+        h1 {
+            color: #333;
+        }
+        ul {
+            list-style-type: none;
+            padding: 0;
+        }
+        li {
+            padding: 10px;
+            border-bottom: 1px solid #eee;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+        li:last-child {
+            border-bottom: none;
+        }
+        .btn {
+            padding: 5px 10px;
+            margin-left: 5px;
+            cursor: pointer;
+        }
+        .delete-btn {
+            background-color: #ff9999;
+            border: 1px solid #ff6666;
+        }
+        .update-btn {
+            background-color: #99ccff;
+            border: 1px solid #66a3ff;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>Users List</h1>
+        <ul id="usersList">
+            <li>
+                John Doe
+                <div>
+                    <button class="btn update-btn" onclick="updateUser('John Doe')">Update</button>
+                    <button class="btn delete-btn" onclick="deleteUser('John Doe')">Delete</button>
+                </div>
+            </li>
+            <li>
+                Jane Smith
+                <div>
+                    <button class="btn update-btn" onclick="updateUser('Jane Smith')">Update</button>
+                    <button class="btn delete-btn" onclick="deleteUser('Jane Smith')">Delete</button>
+                </div>
+            </li>
+            <li>
+                Mike Johnson
+                <div>
+                    <button class="btn update-btn" onclick="updateUser('Mike Johnson')">Update</button>
+                    <button class="btn delete-btn" onclick="deleteUser('Mike Johnson')">Delete</button>
+                </div>
+            </li>
+            <li>
+                Emily Brown
+                <div>
+                    <button class="btn update-btn" onclick="updateUser('Emily Brown')">Update</button>
+                    <button class="btn delete-btn" onclick="deleteUser('Emily Brown')">Delete</button>
+                </div>
+            </li>
+            <li>
+                Chris Lee
+                <div>
+                    <button class="btn update-btn" onclick="updateUser('Chris Lee')">Update</button>
+                    <button class="btn delete-btn" onclick="deleteUser('Chris Lee')">Delete</button>
+                </div>
+            </li>
+        </ul>
+    </div>
+
+    <script>
+        function deleteUser(name) {
+            alert("Delete " + name + " (This is just a simulation)");
+        }
+
+        function updateUser(name) {
+            alert("Update " + name + " (This is just a simulation)");
+        }
+    </script>
+</body>
+</html>

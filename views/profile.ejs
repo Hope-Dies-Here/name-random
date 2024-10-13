@@ -6,12 +6,32 @@
     <title>Profile</title>
     <link rel="stylesheet" href="/header.css" type="text/css" media="all" />
     <link rel="stylesheet" href="/profile.css" type="text/css" media="all" />
+    <style>
+    .profile-header{
+      position: relative;
+    }
+      .update{
+        position: absolute;
+        background-color: #2ea44f;
+        background-color: #24292e;
+        color: #fff;
+        padding: .25rem .75rem;
+        border-radius: 5px;
+        text-decoration: none;
+        font-size: .8rem;
+        top: 2%;
+        right: 2%;
+      }
+    </style>
   </head>
   <body>
     <%- include("./partials/header.ejs") -%>
     <main class="container">
       <div class="top">
       <div class="profile-header">
+        <a href="/profile/update" class="update">
+        Update
+      </a>
         <img
           src="/img/17004.png"
           alt="<%=user.name%>"

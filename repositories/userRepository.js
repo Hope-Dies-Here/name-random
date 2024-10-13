@@ -5,6 +5,14 @@ class UserRepository {
     async getApproval() {
         return await Approval.find();
     }
+
+    async getUsers() {
+        return await User.find();
+    }
+
+    async deleteUser(id) {
+        return await User.deleteOne({id});
+    }
     
     async findById(userId) {
         return await User.findById(userId);
@@ -17,6 +25,24 @@ class UserRepository {
     async createUser(userData) {
         const user = new User(userData);
         return await user.save();
+    }
+
+    async updateUser(id, data) {
+      try {
+        const { 
+          name,
+          githubLink,
+          username,
+        } = data
+        
+        return await User.updateOne({ _id: id }, {
+          name: name,
+          githubLink: githubLink,
+          username: username,
+        }, { new: true })
+      } catch (e) {
+        console.log(e)
+      }
     }
     
     async sendToApproval(userData) {

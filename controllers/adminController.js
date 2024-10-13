@@ -1,5 +1,6 @@
 const challengeRepository = require('../repositories/challengeRepository');
 const submittedChallengeRepository = require('../repositories/submittedChallengeRepository');
+const userRepository = require('../repositories/userRepository');
 exports.getLogin = (req, res) => { 
     res.render('./admin/login', { userId: req.session.userId, messages: req.flash() })
 }
@@ -64,6 +65,17 @@ exports.deleteChallenge = async (req, res) => {
 exports.getChallenges = async (req, res) => {
   const challenges = await challengeRepository.getAllChallenges()
   res.render('challengeLists', { userId: req.session.userId, challenges })
+}
+
+exports.getUsers = async (req, res) => {
+  const users = await userRepository.getUsers()
+  res.render('usersList', { users })
+}
+
+exports.deleteUser = async (req, res) => {
+  const users = await userRepository.deleteUser(req.params.id)
+  await submittedChallengeRepository.deleteByUserId(req.params.id)
+  res.redirect('/admin/usersList')
 }
 
 exports.logout = (req, res) => {
