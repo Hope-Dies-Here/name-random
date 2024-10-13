@@ -59,17 +59,17 @@ router.post('/admin/login', adminController.login);
 router.get('/admin/home', adminAuth, adminController.getHome);
 router.get('/admin/approval', adminAuth, userController.getApproval);
 
-router.get('/admin/challenges', adminController.getChallenges);
+router.get('/admin/challenges', adminAuth, adminController.getChallenges);
 
-router.get('/admin/challenges/:name', adminController.getUpdateChallenge);
-router.post('/admin/challenges/:id', adminController.updateChallenge);
+router.get('/admin/challenges/:name', adminAuth, adminController.getUpdateChallenge);
+router.post('/admin/challenges/:id', adminAuth, adminController.updateChallenge);
 
-router.post('/admin/deleteChallenge/:name', adminController.deleteChallenge);
+router.post('/admin/deleteChallenge/:name', adminAuth, adminController.deleteChallenge);
 
-router.get('/admin/addChallenge', adminController.getAddChallenge);
-router.post('/admin/addChallenge', adminController.addChallenge);
+router.get('/admin/addChallenge', adminAuth, adminController.getAddChallenge);
+router.post('/admin/addChallenge', adminAuth, adminController.addChallenge);
 
 
-//router.post('/admin/usereList', adminController.usersList);
+router.get('/admin/usersList', adminAuth, adminController.getUsers);
 
 module.exports = router;

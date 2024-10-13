@@ -3,16 +3,15 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <titl> Users List</title>
+    <title> Users List</title>
     <style>
         body {
             font-family: Arial, sans-serif;
             margin: 0;
-            padding: 20px;
+            padding: ;
             background-color: #f0f0f0;
         }
         .container {
-            max-width: 600px;
             margin: 0 auto;
             background-color: #fff;
             padding: 20px;
@@ -21,21 +20,21 @@
         h1 {
             color: #333;
         }
-        ul {
+        .conyainer ul {
             list-style-type: none;
             padding: 0;
         }
-        li {
+        .container ul li {
             padding: 10px;
             border-bottom: 1px solid #eee;
             display: flex;
             justify-content: space-between;
             align-items: center;
         }
-        li:last-child {
+        .container li:last-child {
             border-bottom: none;
         }
-        .btn {
+        .container .btn {
             padding: 5px 10px;
             margin-left: 5px;
             cursor: pointer;
@@ -49,46 +48,25 @@
             border: 1px solid #66a3ff;
         }
     </style>
+    <link href="/adminHeader.css" rel="stylesheet" />
 </head>
 <body>
+   <%- include("./partials/adminHeader.ejs") -%>
     <div class="container">
+       
         <h1>Users List</h1>
+        
         <ul id="usersList">
+          <% users.forEach(user => { %>
             <li>
-                John Doe
+               <%= user.name %>
                 <div>
                     <button class="btn update-btn" onclick="updateUser('John Doe')">Update</button>
                     <button class="btn delete-btn" onclick="deleteUser('John Doe')">Delete</button>
                 </div>
             </li>
-            <li>
-                Jane Smith
-                <div>
-                    <button class="btn update-btn" onclick="updateUser('Jane Smith')">Update</button>
-                    <button class="btn delete-btn" onclick="deleteUser('Jane Smith')">Delete</button>
-                </div>
-            </li>
-            <li>
-                Mike Johnson
-                <div>
-                    <button class="btn update-btn" onclick="updateUser('Mike Johnson')">Update</button>
-                    <button class="btn delete-btn" onclick="deleteUser('Mike Johnson')">Delete</button>
-                </div>
-            </li>
-            <li>
-                Emily Brown
-                <div>
-                    <button class="btn update-btn" onclick="updateUser('Emily Brown')">Update</button>
-                    <button class="btn delete-btn" onclick="deleteUser('Emily Brown')">Delete</button>
-                </div>
-            </li>
-            <li>
-                Chris Lee
-                <div>
-                    <button class="btn update-btn" onclick="updateUser('Chris Lee')">Update</button>
-                    <button class="btn delete-btn" onclick="deleteUser('Chris Lee')">Delete</button>
-                </div>
-            </li>
+          <% }) %>
+           
         </ul>
     </div>
 
