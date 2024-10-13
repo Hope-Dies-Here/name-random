@@ -23,7 +23,7 @@ exports.user = async (req, res) => {
         
         if(req.query.username && user._id){
           const completedChallenges = await submittedChallengeRepo.findByUser(user._id)
-          return res.render("profile", { user, completedChallenges, userId: req.session.id });
+          return res.render("seeProfile", { user, completedChallenges, userId: req.session.id });
       }
       
       res.send('No user Found')
@@ -70,6 +70,12 @@ exports.getApproval = async (req, res) => {
 exports.approval = async (req, res) => {
     try {
         const { name, username, password, githubLink } = req.body;
+        const userExists = await userRepository.findByUsername(req.body.username)
+        if(userExists) {
+          req.flash('error', 'username is used by others, try different one')
+          return res.redirect("/register")
+           
+        }
         const timeStamp = Date.now()
         const newUser = await userRepository.sendToApproval({
             name,
