@@ -6,7 +6,7 @@ exports.profile = async (req, res) => {
     try {
         const completedChallenges = await submittedChallengeRepo.findByUser(req.session.userId)
         const user = await userRepository.findById(req.session.userId);
-        res.render("profile", {user, completedChallenges, userId: req.session.id});
+        res.render("profile", {user, completedChallenges, userId: req.session.userId});
     } catch (err) {
       console.log(err)
         res.status(500).send(err);
@@ -23,7 +23,7 @@ exports.user = async (req, res) => {
         
         if(req.query.username && user._id){
           const completedChallenges = await submittedChallengeRepo.findByUser(user._id)
-          return res.render("seeProfile", { user, completedChallenges, userId: req.session.id });
+          return res.render("seeProfile", { user, completedChallenges, userId: req.session.userId });
       }
       
       res.send('No user Found')
