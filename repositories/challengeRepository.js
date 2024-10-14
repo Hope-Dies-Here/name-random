@@ -2,7 +2,7 @@ const Challenge = require('../models/challenge');
 
 class ChallengeRepository {
     async getAllChallenges() {
-        return await Challenge.find();
+        return await Challenge.find().sort({ _id: -1});
     }
 
     async findByName(name) {
