@@ -76,12 +76,21 @@
       <% if (completedChallenges.length > 0) { %>
       <% completedChallenges.forEach(challenge => { %>
         <div class="challenge-item">
+        <% if (challenge.submittedBy.ban) { %>
+          <div class="challenge-title">
+            <%=challenge.challenge.name%>
+          </div>
+          <div class="challenge-description">
+            <%=challenge.challenge.description%>
+          </div>
+        <% } else { %>
           <div class="challenge-title">
             <%=challenge.name%>
           </div>
           <div class="challenge-description">
             <%=challenge.description%>
           </div>
+        <% } %>
           <div class="challenge-meta">
             <span>Completed on <%=challenge.uploadedDate.toString().split(' ').slice(0, 4).join(' ')%> </span>
             <span class="badge"><%=challenge.challenge?.level%></span>

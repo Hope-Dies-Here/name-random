@@ -503,3 +503,8 @@ h2 {
     margin-left: 5px;
   }
 }
+
+.violation{
+  color: #b31616!important;
+  font-size: .8rem!important;
+}

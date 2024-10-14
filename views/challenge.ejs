@@ -57,7 +57,11 @@
               
     
                 <li class="submission-item" data-id="<%=data._id%>">
+                <% if(data.submittedBy.ban) {%>
+                  <strong><%=data.challenge.name%></strong>
+               <% } else {%>
                   <strong><%=data.name%></strong>
+               <% }%>
                   <div class="submission-meta">
                     <span>by <%=data.submittedBy.username%></span>
                     <span><%= timeAgo(data.uploadedDate) %></span>
@@ -114,7 +118,7 @@ document.addEventListener("DOMContentLoaded", async function () {
         <li>
           <div class="ul-item">
             <span class="ul-title">Site Name:</span>
-            <span class="ul-answer">${targetData.name}</span>
+            <span class="ul-answer">${targetData.submittedBy.ban ? targetData.challenge.name : targetData.name}</span>
           </div>
           <div class="ul-item">
             <span class="ul-title">Project Link:</span>
@@ -126,7 +130,7 @@ document.addEventListener("DOMContentLoaded", async function () {
           </div>
           <div class="ul-item">
             <span class="ul-title">Description:</span>
-            <span class="ul-answer">${targetData.description}</span>
+            <span class="ul-answer">${targetData.submittedBy.ban ? "<span class='violation'>This user's description cannot be displayed due to a violation of our guidelines. <br/> ሁላችንም ይህን አይነት ተግባር ልናወግዝ ይገባል። </span>" : targetData.description}</span>
           </div>
           <div class="ul-footer">
             <div class="ul-rating"><span id="rating-data">${averageRating}</span><span class="ul-star">★</span></div>

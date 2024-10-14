@@ -26,6 +26,7 @@
         }
         .container ul li {
             padding: 10px;
+            padding-left: 0px;
             border-bottom: 1px solid #eee;
             display: flex;
             justify-content: space-between;
@@ -42,6 +43,8 @@
         .delete-btn {
             background-color: #ff9999;
             border: 1px solid #ff6666;
+            font-size: .8rem;
+            text-decoration: none;
         }
         .update-btn {
             background-color: #99ccff;
@@ -61,7 +64,13 @@
             <li>
                <%= user.name %>
                 <div>
-                    <button class="btn update-btn" onclick="updateUser('John Doe')">Update</button>
+                    <!-- <button class="btn update-btn" onclick="updateUser('John Doe')">Update</button>
+                                      -->
+                   <% if(user.ban) {%>
+                    <a href="unban/<%=user._id%>" class="btn delete-btn">UNBAN</a>
+                  <% } else { %>
+                    <a href="ban/<%=user._id%>" class="btn delete-btn">BAN</a>
+                  <% } %>
                     <button class="btn delete-btn" onclick="deleteUser('John Doe')">Delete</button>
                 </div>
             </li>
@@ -75,8 +84,12 @@
             alert("Delete " + name + " (This is just a simulation)");
         }
 
-        function updateUser(name) {
-            alert("Update " + name + " (This is just a simulation)");
+        // function updateUser(name) {
+//             alert("Update " + name + " (This is just a simulation)");
+//         }
+        
+        function banUser(id) {
+          location.href = `http://localhost:5000/admin/ban/${id}`
         }
     </script>
 </body>

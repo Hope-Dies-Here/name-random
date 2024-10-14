@@ -71,5 +71,7 @@ router.post('/admin/addChallenge', adminAuth, adminController.addChallenge);
 
 
 router.get('/admin/usersList', adminAuth, adminController.getUsers);
+router.get('/admin/ban/:id', adminAuth, adminController.banUser);
+router.get('/admin/unban/:id', adminAuth, adminController.unbanUser);
 
 module.exports = router;

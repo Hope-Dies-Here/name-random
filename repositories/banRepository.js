@@ -1,17 +1,17 @@
 const User = require('../models/user');
-const Approval = require('../models/approval');
+const BannedUser = require('../models/bannedUser');
 
 class UserRepository {
-    async getApproval() {
-        return await Approval.find();
+    async banUser(data) {
+        return await BannedUser.insertOne(data);
     }
 
-    async getUsers() {
-        return await User.find();
+    async unbanUser(id) {
+        return await BannedUser.deleteOne({_id: id});
     }
 
-    async deleteUser(id) {
-        return await User.deleteOne({id});
+    async find(id) {
+        return await User.findOne({_id: id});
     }
     
     async findById(userId) {
@@ -39,28 +39,6 @@ class UserRepository {
           name: name,
           githubLink: githubLink,
           username: username,
-        }, { new: true })
-      } catch (e) {
-        console.log(e)
-      }
-    }
-
-    async banUser(id) {
-      try {
-    
-        return await User.updateOne({ _id: id }, {
-          ban: true
-        }, { new: true })
-      } catch (e) {
-        console.log(e)
-      }
-    }
-
-    async unbanUser(id) {
-      try {
-    
-        return await User.updateOne({ _id: id }, {
-          ban: false
         }, { new: true })
       } catch (e) {
         console.log(e)

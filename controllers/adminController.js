@@ -1,6 +1,7 @@
 const challengeRepository = require('../repositories/challengeRepository');
 const submittedChallengeRepository = require('../repositories/submittedChallengeRepository');
 const userRepository = require('../repositories/userRepository');
+const banRepository = require('../repositories/banRepository');
 exports.getLogin = (req, res) => { 
     res.render('./admin/login', { userId: req.session.userId, messages: req.flash() })
 }
@@ -76,6 +77,29 @@ exports.deleteUser = async (req, res) => {
   const users = await userRepository.deleteUser(req.params.id)
   await submittedChallengeRepository.deleteByUserId(req.params.id)
   res.redirect('/admin/usersList')
+}
+
+exports.banUser = async (req, res) => {
+  try {
+    const body = {
+      user: req.params.id,
+      reason: "Illegal substances"
+    }
+    await userRepository.banUser(req.params.id)
+    res.redirect("/admin/usersList")
+  } catch (e) {
+    res.send(e)
+  }
+}
+
+exports.unbanUser = async (req, res) => {
+  try {
+    console.log("unban")
+    await userRepository.unbanUser(req.params.id)
+    res.redirect("/admin/usersList")
+  } catch (e) {
+    res.send(e)
+  }
 }
 
 exports.logout = (req, res) => {

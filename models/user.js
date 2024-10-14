@@ -9,6 +9,7 @@ const userSchema = new Schema({
     experiencePoint: { type: Number, default: 0 },
     githubLink: { type: String },
     bio: { type: String },
+    ban: { type: Boolean, default: false }
 });
 
 module.exports = mongoose.model('User', userSchema);
