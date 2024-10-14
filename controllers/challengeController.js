@@ -59,6 +59,9 @@ exports.viewChallenge = async (req, res) => {
 }
 
     const challenge = await challengeRepository.findByName(req.params.name);
+    if(!challenge){
+      return res.status(404).send("What, why did search that?")
+    }
     const submittedChallenges =
       await submittedChallengeRepository.findByChallenge(challenge._id);
     

@@ -1,5 +1,6 @@
 const submittedChallengeRepository = require('../repositories/submittedChallengeRepository');
 const challengeRepository = require('../repositories/challengeRepository');
+const { body, validationResult } = require('express-validator');
 const _ = require("lodash")
 exports.getSubmitChallenge = async (req, res) => {
     try {
@@ -11,32 +12,48 @@ exports.getSubmitChallenge = async (req, res) => {
     }
 };
 
-exports.submitChallenge = async (req, res) => {
+exports.submitChallenge = [
+  // Add sanitizers and validators
+  body('challengeId').trim().escape(),
+  body('link').trim().isURL().withMessage('Invalid URL').escape(),
+  body('description').trim().escape(),
+  body('name').optional().trim().escape(),
+  body('challengeName').optional().trim().escape(),
+  
+  async (req, res) => {
     try {
-          const dataExist = await submittedChallengeRepository.findByUserAndChallenge(req.session.userId, req.body.challengeId)
-          const ban = await banRepository.find(req.session.userId)
-          
-          if(dataExist && dataExist.length > 0) {
-            req.flash('error', `Don't submit twice!!`)
-            return res.redirect('/submit')
-          }
-        
-        const bodyData = {
-            challenge: req.body.challengeId,
-            submittedBy: req.session.userId,
-            link: req.body.link,
-            description: req.body.description,
-            name: req.body.name || req.body.challengeName,
-        }
-       
-        const submission = await submittedChallengeRepository.submitChallenge(bodyData);
-        
-        res.status(201).redirect(`/challenges/${req.body.challengeName}`);
+      // Check for validation errors
+      const errors = validationResult(req);
+      if (!errors.isEmpty()) {
+        req.flash('error', 'Validation failed. Please correct the inputs.');
+        return res.redirect('/submit');
+      }
+
+      const dataExist = await submittedChallengeRepository.findByUserAndChallenge(req.session.userId, req.body.challengeId);
+      const ban = await banRepository.find(req.session.userId);
+
+      if (dataExist && dataExist.length > 0) {
+        req.flash('error', `Don't submit twice!!`);
+        return res.redirect('/submit');
+      }
+
+      const bodyData = {
+        challenge: req.body.challengeId,
+        submittedBy: req.session.userId,
+        link: req.body.link,
+        description: req.body.description,
+        name: req.body.name || req.body.challengeName,
+      };
+
+      const submission = await submittedChallengeRepository.submitChallenge(bodyData);
+
+      res.status(201).redirect(`/challenges/${req.body.challengeName}`);
     } catch (err) {
-      console.log(err)
-        res.status(500).send({"Err": "Server Error, Try Again Latter"});
+      console.log(err);
+      res.status(500).send({ Err: 'Server Error, Try Again Later' });
     }
-};
+  },
+];
 
 exports.getUpdateChallenge = async (req, res) => {
     try {
@@ -56,23 +73,37 @@ exports.getUpdateChallenge = async (req, res) => {
     }
 };
 
-exports.updateChallenge = async (req, res) => {
+
+exports.updateChallenge = [
+  // Add sanitizers and validators
+  body('challengeName').optional().trim().escape(),
+  body('description').optional().trim().escape(),
+  body('link').trim().isURL().withMessage('Invalid URL').escape(),
+  
+  async (req, res) => {
     try {
-        const updatedData = await submittedChallengeRepository.updateSolution(req.params.id, req.body)
-        
-         
-        if(!updatedData) {
-          req.flash('error', 'Try Again!')
-          return res.redirect('/challenges')
-        }
-        
-        req.flash('success', 'Updated!')
-        res.status(201).redirect(`/challenges/${req.body.challengeName}`);
+      // Check for validation errors
+      const errors = validationResult(req);
+      if (!errors.isEmpty()) {
+        req.flash('error', 'Validation failed. Please correct the inputs.');
+        return res.redirect('/challenges');
+      }
+
+      const updatedData = await submittedChallengeRepository.updateSolution(req.params.id, req.body);
+
+      if (!updatedData) {
+        req.flash('error', 'Try Again!');
+        return res.redirect('/challenges');
+      }
+
+      req.flash('success', 'Updated!');
+      res.status(201).redirect(`/challenges/${req.body.challengeName}`);
     } catch (err) {
-      console.log(err)
-        res.status(500).send({"Err": "Server Error, Try Again Latter"});
+      console.log(err);
+      res.status(500).send({ Err: 'Server Error, Try Again Later' });
     }
-};
+  },
+];
 
 exports.deleteChallenge = async (req, res) => {
     try {

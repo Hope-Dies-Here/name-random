@@ -34,16 +34,16 @@
                     </div>
                     <div>
                         <label for="solutionLink">Solution Link:</label>
-                        <input type="url" value="<%=data.link%>" id="solutionLink" name="link" placeholder="https://github.com/yourusername/your-repo" required>
-                        <input type="text" id="challengeName" name="challengeName" value="<%=challenge.name%>" value="" style="display: none">
+                        <input type="url" value="<%-data.link%>" id="solutionLink" name="link" placeholder="https://github.com/yourusername/your-repo" required>
+                        <input type="text" id="challengeName" name="challengeName" value="<%-challenge.name%>" value="" style="display: none">
                     </div>
                     <div>
                         <label for="siteName">Website Title:</label>
-                        <input type="text" value="<%=data.name%>" id="siteName" name="name" placeholder="Your Website Title (optional)">
+                        <input type="text" value="<%-data.name%>" id="siteName" name="name" placeholder="Your Website Title (optional)">
                     </div>
                     <div>
                         <label for="description">Description About Your Site:</label>
-                        <textarea id="description" name="description" placeholder="Your Website Title (optional)"><%=data.description%></textarea>
+                        <textarea id="description" name="description" placeholder="Your Website Title (optional)"><%-data.description%></textarea>
                     </div>
                     <button type="submit">Submit Solution</button>
                 </form>
