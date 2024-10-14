@@ -137,6 +137,7 @@ h2 {
   font-weight: 500;
   transition: background-color 0.2s ease-in-out;
   text-decoration: none;
+  width: fit-content;
   display: inline-block;
 }
 
@@ -486,6 +487,10 @@ h2 {
   color: var(--color-secondary);
   color: #b31616;
   font-size: .8rem;
+}
+
+.available {
+  color: var(--color-primary);
 }
 
 

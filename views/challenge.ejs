@@ -21,7 +21,13 @@
           <div class="demfoolclass">
           <a href="/submit" class="btn">Submit Your Solution</a>
        <% if(challenge.deadline) { %>
-          <div class="deadline"> Deadline: <%=challenge.deadline.toString().split(' ').slice(0, 4).join(' ') %></div>
+         <% if(challenge.deadline < new Date()) { %>
+          <div class="deadline"> Deadline: <%=/* challenge.deadline.toString().split(' ').slice(0, 4).join(' ') */ %> <%= daysLeft(challenge.deadline) %>
+          </div>
+         <% } else { %>
+            <div class="deadline available"> Deadline: <%=challenge.deadline.toString().split(' ').slice(0, 4).join(' ') %>  (<%= daysLeft(challenge.deadline) %>)
+            </div>
+         <% } %>
        <% } %>
         </div>
       </div>
@@ -54,7 +60,7 @@
                   <strong><%=data.name%></strong>
                   <div class="submission-meta">
                     <span>by <%=data.submittedBy.username%></span>
-                    <span>2 hours ago</span>
+                    <span><%= timeAgo(data.uploadedDate) %></span>
                   </div>
                 </li>
               <% }) %>
