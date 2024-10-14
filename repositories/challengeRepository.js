@@ -35,7 +35,7 @@ class ChallengeRepository {
         } = data
         
         return await Challenge.updateOne({ _id: id }, {
-          name: name,
+          name: name.trim(),
           level: level,
           status: status,
           expPointReward: expPointReward,
