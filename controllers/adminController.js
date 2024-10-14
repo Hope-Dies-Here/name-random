@@ -3,6 +3,9 @@ const submittedChallengeRepository = require('../repositories/submittedChallenge
 const userRepository = require('../repositories/userRepository');
 const banRepository = require('../repositories/banRepository');
 exports.getLogin = (req, res) => { 
+  if(req.session.admin) {
+    return res.redirect("/admin/challenges")
+  }
     res.render('./admin/login', { userId: req.session.userId, messages: req.flash() })
 }
 
