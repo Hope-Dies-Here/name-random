@@ -30,9 +30,12 @@ app.use(
 );
 app.use(flash());
 app.use((req, res, next) => {
-  res.setHeader('Cache-Control', 'no-store');  // Prevents caching
+  res.setHeader('Cache-Control', 'no-cache, no-store, must-revalidate');
+  res.setHeader('Pragma', 'no-cache');
+  res.setHeader('Expires', '0');
   next();
 });
+
 // Define routes (assuming routes are in a separate file)
 const routes = require('./routes/index');
 app.use('/', routes);
