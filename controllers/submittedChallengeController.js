@@ -30,7 +30,6 @@ exports.submitChallenge = [
       }
 
       const dataExist = await submittedChallengeRepository.findByUserAndChallenge(req.session.userId, req.body.challengeId);
-      const ban = await banRepository.find(req.session.userId);
 
       if (dataExist && dataExist.length > 0) {
         req.flash('error', `Don't submit twice!!`);
