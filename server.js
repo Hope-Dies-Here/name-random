@@ -4,6 +4,7 @@ const session = require('express-session');
 const flash = require('express-flash');
 const MongoStore = require("connect-mongo");
 const path = require('path'); // Import path for resolving directory paths
+require("dotenv").config();
 
 const app = express();
 connectDB()
@@ -17,10 +18,11 @@ app.set('views', path.join(__dirname, 'views')); // Adjust the path as needed
 app.use(express.static(__dirname + '/public'))
 app.use(express.json());
 app.use(express.urlencoded({ extended: true })); // Parse URL-encoded bodies
-const dbString = "mongodb+srv://sarah:sarah@cluster0.xr5qdwo.mongodb.net/name"
+const dbString = process.env.DB_URL;
+
 app.use(
   session({
-    secret: "mysecretkey",
+    secret: process.env.SECRET,
     cookie: { maxAge: 86400000 },
     store: MongoStore.create({ mongoUrl: dbString, }),
     resave: false,
